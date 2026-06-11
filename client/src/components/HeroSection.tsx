@@ -1,6 +1,7 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import type { Channel } from '../services/api';
-import { Play, Info } from 'lucide-react';
+import { Play, Info, Trophy } from 'lucide-react';
 
 interface HeroSectionProps {
   featuredChannel?: Channel;
@@ -12,6 +13,16 @@ const HeroSection: React.FC<HeroSectionProps> = ({ featuredChannel, onWatchNow }
 
   return (
     <div className="relative w-full h-[85vh] -mt-10 overflow-hidden group">
+      {/* World Cup CTA Button (Top Right) */}
+      <div className="absolute top-10 right-12 md:right-20 z-20">
+        <Link 
+          to="/worldcup"
+          className="bg-amber-500 hover:bg-amber-400 text-black font-black px-6 py-3.5 rounded-2xl flex items-center space-x-2.5 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-amber-500/20 border border-amber-400/50 group/btn"
+        >
+          <Trophy className="w-5 h-5 text-black animate-bounce" />
+          <span className="text-sm tracking-wider uppercase font-extrabold">Watch World Cup Live Here</span>
+        </Link>
+      </div>
       {/* Background with advanced gradient masking */}
       <div 
         className="absolute inset-0 bg-cover bg-center transition-transform duration-[2000ms] ease-out group-hover:scale-110"

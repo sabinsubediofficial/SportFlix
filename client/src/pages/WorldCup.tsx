@@ -358,57 +358,56 @@ const WorldCup = () => {
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredMatches.map((match) => (
               <div 
                 key={match.id} 
-                className="bg-white/5 border border-white/5 rounded-3xl p-8 flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 group shadow-xl"
+                className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 group shadow-lg"
               >
                 <div>
-                  <div className="flex justify-between items-center text-xs font-bold text-white/40 uppercase tracking-wider mb-6">
+                  <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
                     <span>{match.group}</span>
-                    <span className="bg-white/5 px-3 py-1 rounded-lg text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
+                    <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
                   </div>
 
                   {/* Teams Display */}
-                  <div className="flex items-center justify-center space-x-8 mb-6">
-                    <div className="flex flex-col items-center flex-1 text-center">
-                      <span className="text-5xl filter drop-shadow-md mb-2">{match.homeFlag}</span>
-                      <span className="text-lg font-black text-white">{match.homeTeam}</span>
+                  <div className="flex items-center justify-center space-x-4 mb-4">
+                    <div className="flex items-center space-x-2 flex-1 justify-end">
+                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.homeTeam}</span>
+                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.homeFlag}</span>
                     </div>
                     
-                    <span className="text-white/20 font-black text-xl italic uppercase tracking-widest">VS</span>
+                    <span className="text-white/20 font-black text-xs italic uppercase tracking-wider shrink-0">VS</span>
                     
-                    <div className="flex flex-col items-center flex-1 text-center">
-                      <span className="text-5xl filter drop-shadow-md mb-2">{match.awayFlag}</span>
-                      <span className="text-lg font-black text-white">{match.awayTeam}</span>
+                    <div className="flex items-center space-x-2 flex-1 justify-start">
+                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.awayFlag}</span>
+                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.awayTeam}</span>
                     </div>
                   </div>
 
-                  <p className="text-center text-xs text-white/40 font-medium mb-8">
+                  <p className="text-center text-[10px] text-white/30 font-medium mb-4 truncate">
                     📍 {match.stadium}
                   </p>
                 </div>
 
                 {/* Broadcaster Quick Play Buttons */}
-                <div className="border-t border-white/5 pt-6 space-y-3">
-                  <p className="text-[10px] font-black uppercase tracking-widest text-amber-500/80 mb-2">Available Streams:</p>
-                  <div className="flex flex-wrap gap-3">
+                <div className="border-t border-white/5 pt-4">
+                  <div className="flex flex-wrap gap-2">
                     {match.broadcasters.map((b) => {
                       const online = isChannelOnline(b.searchKey);
                       return (
                         <button
                           key={b.name}
                           onClick={() => handleWatchChannel(b.searchKey)}
-                          className={`flex items-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold transition-all border ${
+                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all border ${
                             online 
-                              ? 'bg-amber-500/10 text-amber-500 border-amber-500/30 hover:bg-amber-500 hover:text-black cursor-pointer' 
+                              ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500 hover:text-black cursor-pointer' 
                               : 'bg-white/5 text-white/30 border-white/5 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20'
                           }`}
                         >
-                          <Play size={10} className="fill-current" />
+                          <Play size={8} className="fill-current" />
                           <span>{b.name}</span>
-                          <span className={`w-1.5 h-1.5 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                          <span className={`w-1 h-1 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`} />
                         </button>
                       );
                     })}
