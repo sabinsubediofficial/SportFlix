@@ -13,8 +13,7 @@ interface Match {
   awayFlag: string;
   group: string;
   stadium: string;
-  time: string;
-  date: string;
+  utcDateTime: string;
   broadcasters: { name: string; searchKey: string }[];
 }
 
@@ -72,9 +71,155 @@ const getChannelLanguage = (name: string): string => {
   return 'Other';
 };
 
+const matches: Match[] = [
+  {
+    id: 'm1',
+    homeTeam: 'Mexico',
+    awayTeam: 'South Africa',
+    homeFlag: '🇲🇽',
+    awayFlag: '🇿🇦',
+    group: 'Group A',
+    stadium: 'Estadio Azteca, Mexico City',
+    utcDateTime: '2026-06-11T15:00:00Z',
+    broadcasters: [
+      { name: 'Fox Deportes', searchKey: 'fox deportes' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TRT 1', searchKey: 'trt 1' },
+      { name: 'TVRI Sport', searchKey: 'tvri sport' }
+    ]
+  },
+  {
+    id: 'm2',
+    homeTeam: 'Korea Republic',
+    awayTeam: 'Czechia',
+    homeFlag: '🇰🇷',
+    awayFlag: '🇨🇿',
+    group: 'Group A',
+    stadium: 'Estadio Guadalajara, Guadalajara',
+    utcDateTime: '2026-06-11T18:00:00Z',
+    broadcasters: [
+      { name: 'Fox Deportes', searchKey: 'fox deportes' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TVRI', searchKey: 'tvri' }
+    ]
+  },
+  {
+    id: 'm3',
+    homeTeam: 'Canada',
+    awayTeam: 'Bosnia & Herzegovina',
+    homeFlag: '🇨🇦',
+    awayFlag: '🇧🇦',
+    group: 'Group B',
+    stadium: 'Toronto Stadium, Toronto',
+    utcDateTime: '2026-06-12T16:00:00Z',
+    broadcasters: [
+      { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'Thai PBS', searchKey: 'thai pbs' }
+    ]
+  },
+  {
+    id: 'm4',
+    homeTeam: 'USA',
+    awayTeam: 'Paraguay',
+    homeFlag: '🇺🇸',
+    awayFlag: '🇵🇾',
+    group: 'Group D',
+    stadium: 'Los Angeles Stadium, Los Angeles',
+    utcDateTime: '2026-06-12T19:00:00Z',
+    broadcasters: [
+      { name: 'Fox Deportes', searchKey: 'fox deportes' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TVRI Sport', searchKey: 'tvri sport' }
+    ]
+  },
+  {
+    id: 'm5',
+    homeTeam: 'Qatar',
+    awayTeam: 'Switzerland',
+    homeFlag: '🇶🇦',
+    awayFlag: '🇨🇭',
+    group: 'Group B',
+    stadium: 'San Francisco Bay Area Stadium',
+    utcDateTime: '2026-06-13T14:00:00Z',
+    broadcasters: [
+      { name: 'ITV Deportes', searchKey: 'itv deportes' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TRT 1', searchKey: 'trt 1' },
+      { name: 'TVRI', searchKey: 'tvri' }
+    ]
+  },
+  {
+    id: 'm6',
+    homeTeam: 'Brazil',
+    awayTeam: 'Morocco',
+    homeFlag: '🇧🇷',
+    awayFlag: '🇲🇦',
+    group: 'Group C',
+    stadium: 'MetLife Stadium, New York/NJ',
+    utcDateTime: '2026-06-13T17:00:00Z',
+    broadcasters: [
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TRT 1', searchKey: 'trt 1' },
+      { name: 'TVRI Sport', searchKey: 'tvri sport' }
+    ]
+  },
+  {
+    id: 'm7',
+    homeTeam: 'Haiti',
+    awayTeam: 'Scotland',
+    homeFlag: '🇭🇹',
+    awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
+    group: 'Group C',
+    stadium: 'Gillette Stadium, Boston',
+    utcDateTime: '2026-06-13T20:00:00Z',
+    broadcasters: [
+      { name: 'ITV Deportes', searchKey: 'itv deportes' },
+      { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TVRI', searchKey: 'tvri' }
+    ]
+  },
+  {
+    id: 'm8',
+    homeTeam: 'Australia',
+    awayTeam: 'Türkiye',
+    homeFlag: '🇦🇺',
+    awayFlag: '🇹🇷',
+    group: 'Group D',
+    stadium: 'BC Place, Vancouver',
+    utcDateTime: '2026-06-13T23:00:00Z',
+    broadcasters: [
+      { name: 'TRT 1', searchKey: 'trt 1' },
+      { name: 'CazeTV', searchKey: 'cazetv' },
+      { name: 'TVRI Sport', searchKey: 'tvri sport' }
+    ]
+  }
+];
+
+const getLocalDateString = (utcDateTime: string) => {
+  const dateObj = new Date(utcDateTime);
+  return dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
+};
+
+const getLocalTimeString = (utcDateTime: string) => {
+  const dateObj = new Date(utcDateTime);
+  return dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
+};
+
+const getTabLabel = (dateStr: string) => {
+  const dateObj = new Date(dateStr + ', 2026');
+  const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
+  return `${dayName} - ${dateStr}`;
+};
+
+const dateTabs = Array.from(new Set(matches.map(m => getLocalDateString(m.utcDateTime)))).sort((a, b) => {
+  return new Date(a + ', 2026').getTime() - new Date(b + ', 2026').getTime();
+});
+
 const WorldCup = () => {
   const { openPlayer } = usePlayer();
-  const [selectedDate, setSelectedDate] = useState<string>('June 11');
+  const [selectedDate, setSelectedDate] = useState<string>(dateTabs[0] || 'June 11');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('All');
 
   // Fetch general channel registry
@@ -132,143 +277,8 @@ const WorldCup = () => {
     return filteredWcChannels.filter(c => c.status !== 'online');
   }, [filteredWcChannels]);
 
-  // World Cup Opening matches (June 11 - June 13, 2026)
-  const matches: Match[] = [
-    {
-      id: 'm1',
-      homeTeam: 'Mexico',
-      awayTeam: 'South Africa',
-      homeFlag: '🇲🇽',
-      awayFlag: '🇿🇦',
-      group: 'Group A',
-      stadium: 'Estadio Azteca, Mexico City',
-      time: '15:00 UTC',
-      date: 'June 11',
-      broadcasters: [
-        { name: 'Fox Deportes', searchKey: 'fox deportes' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TRT 1', searchKey: 'trt 1' },
-        { name: 'TVRI Sport', searchKey: 'tvri sport' }
-      ]
-    },
-    {
-      id: 'm2',
-      homeTeam: 'Korea Republic',
-      awayTeam: 'Czechia',
-      homeFlag: '🇰🇷',
-      awayFlag: '🇨🇿',
-      group: 'Group A',
-      stadium: 'Estadio Guadalajara, Guadalajara',
-      time: '18:00 UTC',
-      date: 'June 11',
-      broadcasters: [
-        { name: 'Fox Deportes', searchKey: 'fox deportes' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TVRI', searchKey: 'tvri' }
-      ]
-    },
-    {
-      id: 'm3',
-      homeTeam: 'Canada',
-      awayTeam: 'Bosnia & Herzegovina',
-      homeFlag: '🇨🇦',
-      awayFlag: '🇧🇦',
-      group: 'Group B',
-      stadium: 'Toronto Stadium, Toronto',
-      time: '16:00 UTC',
-      date: 'June 12',
-      broadcasters: [
-        { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'Thai PBS', searchKey: 'thai pbs' }
-      ]
-    },
-    {
-      id: 'm4',
-      homeTeam: 'USA',
-      awayTeam: 'Paraguay',
-      homeFlag: '🇺🇸',
-      awayFlag: '🇵🇾',
-      group: 'Group D',
-      stadium: 'Los Angeles Stadium, Los Angeles',
-      time: '19:00 UTC',
-      date: 'June 12',
-      broadcasters: [
-        { name: 'Fox Deportes', searchKey: 'fox deportes' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TVRI Sport', searchKey: 'tvri sport' }
-      ]
-    },
-    {
-      id: 'm5',
-      homeTeam: 'Qatar',
-      awayTeam: 'Switzerland',
-      homeFlag: '🇶🇦',
-      awayFlag: '🇨🇭',
-      group: 'Group B',
-      stadium: 'San Francisco Bay Area Stadium',
-      time: '14:00 UTC',
-      date: 'June 13',
-      broadcasters: [
-        { name: 'ITV Deportes', searchKey: 'itv deportes' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TRT 1', searchKey: 'trt 1' },
-        { name: 'TVRI', searchKey: 'tvri' }
-      ]
-    },
-    {
-      id: 'm6',
-      homeTeam: 'Brazil',
-      awayTeam: 'Morocco',
-      homeFlag: '🇧🇷',
-      awayFlag: '🇲🇦',
-      group: 'Group C',
-      stadium: 'MetLife Stadium, New York/NJ',
-      time: '17:00 UTC',
-      date: 'June 13',
-      broadcasters: [
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TRT 1', searchKey: 'trt 1' },
-        { name: 'TVRI Sport', searchKey: 'tvri sport' }
-      ]
-    },
-    {
-      id: 'm7',
-      homeTeam: 'Haiti',
-      awayTeam: 'Scotland',
-      homeFlag: '🇭🇹',
-      awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-      group: 'Group C',
-      stadium: 'Gillette Stadium, Boston',
-      time: '20:00 UTC',
-      date: 'June 13',
-      broadcasters: [
-        { name: 'ITV Deportes', searchKey: 'itv deportes' },
-        { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TVRI', searchKey: 'tvri' }
-      ]
-    },
-    {
-      id: 'm8',
-      homeTeam: 'Australia',
-      awayTeam: 'Türkiye',
-      homeFlag: '🇦🇺',
-      awayFlag: '🇹🇷',
-      group: 'Group D',
-      stadium: 'BC Place, Vancouver',
-      time: '23:00 UTC',
-      date: 'June 13',
-      broadcasters: [
-        { name: 'TRT 1', searchKey: 'trt 1' },
-        { name: 'CazeTV', searchKey: 'cazetv' },
-        { name: 'TVRI Sport', searchKey: 'tvri sport' }
-      ]
-    }
-  ];
-
   const filteredMatches = useMemo(() => {
-    return matches.filter(match => match.date === selectedDate);
+    return matches.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
   }, [selectedDate]);
 
   // Handler to stream a channel matching the broadcaster searchKey
@@ -332,7 +342,7 @@ const WorldCup = () => {
 
             {/* Date Tabs */}
             <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit">
-              {['June 11', 'June 12', 'June 13'].map((date) => (
+              {dateTabs.map((date) => (
                 <button
                   key={date}
                   onClick={() => setSelectedDate(date)}
@@ -342,7 +352,7 @@ const WorldCup = () => {
                       : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
-                  {date === 'June 11' ? 'Thu - June 11' : date === 'June 12' ? 'Fri - June 12' : 'Sat - June 13'}
+                  {getTabLabel(date)}
                 </button>
               ))}
             </div>
@@ -357,7 +367,7 @@ const WorldCup = () => {
                 <div>
                   <div className="flex justify-between items-center text-xs font-bold text-white/40 uppercase tracking-wider mb-6">
                     <span>{match.group}</span>
-                    <span className="bg-white/5 px-3 py-1 rounded-lg text-white/60 border border-white/5">{match.time}</span>
+                    <span className="bg-white/5 px-3 py-1 rounded-lg text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
                   </div>
 
                   {/* Teams Display */}
