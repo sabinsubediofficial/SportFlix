@@ -47,9 +47,9 @@ function App() {
       {selectedChannel && !isModalOpen && (
         <button 
           onClick={() => setIsModalOpen(true)}
-          className="fixed bottom-8 right-8 z-[60] bg-blue-600 hover:bg-blue-700 p-4 rounded-2xl shadow-2xl shadow-blue-500/40 flex items-center space-x-4 animate-in slide-in-from-bottom-10 duration-500 group"
+          className="fixed bottom-8 right-8 z-[60] bg-blue-600 hover:bg-blue-700 p-3 rounded-2xl shadow-2xl shadow-blue-500/40 flex items-center space-x-3 animate-in slide-in-from-bottom-10 duration-500 group"
         >
-          <div className="w-10 h-10 bg-white/20 rounded-xl flex items-center justify-center">
+          <div className="w-9 h-9 bg-white/20 rounded-xl flex items-center justify-center">
             <PlayCircle className="w-6 h-6 text-white" />
           </div>
           <div className="text-left pr-4">
@@ -63,14 +63,14 @@ function App() {
       )}
 
       {/* ultra-minimal glass sidebar */}
-      <nav className="h-screen w-20 flex flex-col items-center py-8 bg-black/40 backdrop-blur-3xl border-r border-white/5 z-50">
-        <div className="mb-12">
+      <nav className="h-screen w-20 flex flex-col items-center py-6 bg-black/40 backdrop-blur-3xl border-r border-white/5 z-50">
+        <div className="mb-8">
           <div className="w-12 h-12 bg-gradient-to-tr from-blue-600 to-indigo-600 rounded-2xl flex items-center justify-center shadow-2xl shadow-blue-500/20 rotate-3">
             <PlayCircle className="w-7 h-7 text-white" />
           </div>
         </div>
 
-        <div className="flex-1 flex flex-col space-y-8">
+        <div className="flex-1 flex flex-col space-y-5">
           {navItems.map((item) => {
             const Icon = item.icon;
             const isActive = location.pathname === item.path;
@@ -102,7 +102,7 @@ function App() {
       
       {/* Content Area */}
       <main className="flex-1 h-screen overflow-y-auto scroll-smooth relative">
-        <div className="absolute top-0 left-0 w-full h-[500px] bg-gradient-to-b from-blue-600/10 to-transparent pointer-events-none" />
+        <div className="absolute top-0 left-0 w-full h-[400px] bg-gradient-to-b from-blue-600/10 to-transparent pointer-events-none" />
         <Routes>
           <Route path="/" element={<LiveTV />} />
           <Route path="/worldcup" element={<WorldCup />} />

@@ -375,12 +375,12 @@ const Scoreboard: React.FC = () => {
   }, [liveMatches]);
 
   return (
-    <div className="min-h-screen bg-[#050505] pb-20">
+    <div className="min-h-screen bg-[#050505] pb-24">
       {/* Page Header Banner */}
-      <div className="relative h-[300px] w-full overflow-hidden flex items-end bg-gradient-to-r from-indigo-900/10 via-transparent to-transparent">
+      <div className="relative h-[280px] w-full overflow-hidden flex items-end bg-gradient-to-r from-indigo-900/10 via-transparent to-transparent">
         <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-[#050505] pointer-events-none" />
         
-        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 md:px-12 lg:px-20 pb-10">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16 pb-8">
           <div className="max-w-4xl">
             <div className="flex items-center space-x-3 mb-4">
               <div className="w-10 h-10 bg-indigo-500/20 border border-indigo-500/30 rounded-xl flex items-center justify-center">
@@ -388,7 +388,7 @@ const Scoreboard: React.FC = () => {
               </div>
               <span className="text-indigo-400 text-xs font-black uppercase tracking-[0.25em]">Tournament Stats</span>
             </div>
-            <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-2xl">
+            <h1 className="text-4xl md:text-6xl font-black text-white tracking-tighter drop-shadow-2xl">
               Live Standings
             </h1>
             <p className="text-white/50 text-base md:text-lg max-w-xl font-medium mt-3 leading-relaxed">
@@ -398,9 +398,9 @@ const Scoreboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto pt-8 md:pt-12 space-y-8 md:space-y-12">
+      <div className="px-6 md:px-12 lg:px-16 max-w-[1400px] mx-auto pt-8 md:pt-10 space-y-8">
         {/* Info Alert */}
-        <div className="flex items-start gap-4 p-6 bg-white/5 border border-white/5 rounded-3xl text-white/50 max-w-3xl">
+        <div className="flex items-start gap-3 p-5 bg-white/5 border border-white/5 rounded-2xl text-white/50 max-w-3xl">
           <Info className="w-6 h-6 text-indigo-400 shrink-0 mt-0.5" />
           <div className="text-sm leading-relaxed">
             <p className="font-bold text-white mb-1">Qualification Format</p>
@@ -411,7 +411,7 @@ const Scoreboard: React.FC = () => {
         </div>
 
         {/* Live Scoreboard Section */}
-        <div className="bg-white/5 border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl">
+        <div className="bg-white/5 border border-white/5 rounded-2xl p-5 md:p-6 space-y-5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-white/5 pb-4">
             <div>
               <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
@@ -636,11 +636,11 @@ const Scoreboard: React.FC = () => {
         </div>
 
         {/* Groups Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6">
           {groupsWithStandings.map((group) => (
             <div 
               key={group.name} 
-              className="bg-white/5 border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl hover:border-white/10 transition-colors duration-300"
+              className="bg-white/5 border border-white/5 rounded-2xl p-5 md:p-6 space-y-4 shadow-2xl hover:border-white/10 transition-colors duration-300"
             >
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">

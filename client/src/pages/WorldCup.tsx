@@ -308,9 +308,9 @@ const WorldCup = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#050505] pb-20">
+    <div className="min-h-screen bg-[#050505] pb-24">
       {/* World Cup Hero Banner */}
-      <div className="relative h-[400px] w-full overflow-hidden flex items-end p-12 md:p-20">
+      <div className="relative h-[320px] w-full overflow-hidden flex items-end p-6 md:p-12 lg:p-16">
         {/* Background Image with Dark Golden Gradient */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] scale-105"
@@ -322,7 +322,7 @@ const WorldCup = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/40" />
         </div>
         
-        <div className="relative z-10 max-w-4xl">
+        <div className="relative z-10 w-full max-w-[1400px] mx-auto px-6 md:px-12 lg:px-16">
           <div className="flex items-center space-x-3 mb-4 animate-in fade-in duration-500">
             <div className="w-10 h-10 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center backdrop-blur-md">
               <Trophy className="w-5 h-5 text-blue-500 animate-pulse" />
@@ -338,12 +338,12 @@ const WorldCup = () => {
         </div>
       </div>
 
-      <div className="px-12 md:px-20 max-w-7xl mx-auto mt-10">
+      <div className="px-6 md:px-12 lg:px-16 max-w-[1400px] mx-auto mt-8">
         {/* Modern Sub-tab switcher */}
-        <div className="flex border-b border-white/5 mb-10 overflow-x-auto scrollbar-hide">
+        <div className="flex border-b border-white/5 mb-8 overflow-x-auto scrollbar-hide">
           <button
             onClick={() => setActiveSubTab('live')}
-            className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
+            className={`relative pb-3 px-5 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
               activeSubTab === 'live' ? 'text-blue-500' : 'text-white/40 hover:text-white'
             }`}
           >
@@ -357,7 +357,7 @@ const WorldCup = () => {
           
           <button
             onClick={() => setActiveSubTab('schedule')}
-            className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
+            className={`relative pb-3 px-5 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
               activeSubTab === 'schedule' ? 'text-blue-500' : 'text-white/40 hover:text-white'
             }`}
           >
@@ -508,7 +508,7 @@ const WorldCup = () => {
                   <p className="font-bold text-sm">No channels are currently online. Running validators shortly...</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
                   {workingChannels.map(channel => (
                     <div key={channel.id} className="virtual-card-container">
                       <ChannelCard 
@@ -532,7 +532,7 @@ const WorldCup = () => {
                   <p className="font-bold text-sm">All selected library streams are online.</p>
                 </div>
               ) : (
-                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 opacity-60">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5 opacity-60">
                   {offlineChannels.map(channel => (
                     <div key={channel.id} className="virtual-card-container">
                       <ChannelCard 

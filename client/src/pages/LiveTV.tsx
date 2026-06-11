@@ -92,9 +92,9 @@ const LiveTV = () => {
       <div className={`transition-all duration-700 ${isModalOpen ? 'scale-95 blur-2xl opacity-0' : 'scale-100 blur-0 opacity-100'}`}>
         <HeroSection featuredChannel={featuredChannel} onWatchNow={openPlayer} />
         
-        <div className="relative z-10 -mt-10 px-12 md:px-20 pb-20 max-w-7xl mx-auto">
+        <div className="relative z-10 -mt-16 px-6 md:px-12 lg:px-16 pb-24 max-w-[1400px] mx-auto">
           {/* Header & Controls */}
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-12">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-6 mb-8">
             <div>
               <h2 className="text-4xl font-black text-white tracking-tighter">Live Sports</h2>
               <p className="text-white/40 font-medium mt-1">
@@ -144,7 +144,7 @@ const LiveTV = () => {
           </div>
 
           {/* Channels Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-5">
             {sortedChannels.map(channel => (
               <div key={channel.id} className="virtual-card-container">
                 <ChannelCard 
@@ -159,11 +159,11 @@ const LiveTV = () => {
 
       {channels.length === 0 && !isLoading && (
         <div className="h-screen flex flex-col items-center justify-center text-center px-4">
-          <div className="w-32 h-32 bg-white/5 rounded-[3rem] flex items-center justify-center mb-10 border border-white/5 shadow-2xl">
+          <div className="w-32 h-32 bg-white/5 rounded-3xl flex items-center justify-center mb-8 border border-white/5 shadow-2xl">
             <Tv className="w-16 h-16 text-white/10" />
           </div>
           <h2 className="text-4xl font-black text-white mb-4 tracking-tighter">No Channels Synchronized</h2>
-          <p className="text-white/40 max-w-md mb-12 font-medium leading-relaxed text-lg">
+          <p className="text-white/40 max-w-md mb-8 font-medium leading-relaxed text-lg">
             We couldn't find any channels in your library. Our auto-sync engine will attempt to pull from IPTV-org shortly.
           </p>
           <div className="flex space-x-4">

@@ -40,15 +40,15 @@ const Search = () => {
   });
 
   return (
-    <div className="min-h-screen bg-[#050505] pt-32 px-12 md:px-20 pb-20">
+    <div className="min-h-screen bg-[#050505] pt-24 px-6 md:px-12 lg:px-16 pb-24">
       {/* Search Header */}
-      <div className="max-w-4xl mx-auto mb-16">
-        <h1 className="text-6xl font-black text-white mb-8 tracking-tighter text-glow italic">
+      <div className="max-w-4xl mx-auto mb-12">
+        <h1 className="text-5xl font-black text-white mb-8 tracking-tighter text-glow italic">
           {searchMode === 'local' ? 'Library Search' : 'Global Discovery'}
         </h1>
         
         {/* Mode Toggle */}
-        <div className="flex gap-4 mb-8">
+        <div className="flex gap-4 mb-6">
           <button 
             onClick={() => setSearchMode('local')}
             className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold transition-all ${searchMode === 'local' ? 'bg-blue-600 text-white' : 'bg-white/5 text-white/40 hover:bg-white/10'}`}
@@ -66,11 +66,11 @@ const Search = () => {
         </div>
 
         <div className="relative group">
-          <div className="absolute inset-y-0 left-6 flex items-center pointer-events-none">
+          <div className="absolute inset-y-0 left-5 flex items-center pointer-events-none">
             {isLoading ? (
-              <Loader2 className="w-8 h-8 text-blue-500 animate-spin" />
+              <Loader2 className="w-6 h-6 text-blue-500 animate-spin" />
             ) : (
-              <SearchIcon className="w-8 h-8 text-white/20 group-focus-within:text-blue-500 transition-colors" />
+              <SearchIcon className="w-6 h-6 text-white/20 group-focus-within:text-blue-500 transition-colors" />
             )}
           </div>
           <input
@@ -79,18 +79,18 @@ const Search = () => {
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder={searchMode === 'local' ? "Search your sports library..." : "Search global sports channels..."}
-            className="w-full bg-white/5 border border-white/10 rounded-[2rem] py-8 pl-20 pr-8 text-2xl font-bold text-white placeholder:text-white/10 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all shadow-2xl"
+            className="w-full bg-white/5 border border-white/10 rounded-2xl py-5 pl-16 pr-8 text-lg font-bold text-white placeholder:text-white/10 focus:outline-none focus:ring-4 focus:ring-blue-500/20 focus:border-blue-500/50 transition-all shadow-2xl"
           />
           {searchQuery && (
             <button 
               onClick={() => setSearchQuery('')}
-              className="absolute inset-y-0 right-6 flex items-center"
+              className="absolute inset-y-0 right-5 flex items-center"
             >
-              <X className="w-8 h-8 text-white/20 hover:text-white transition-colors" />
+              <X className="w-6 h-6 text-white/20 hover:text-white transition-colors" />
             </button>
           )}
         </div>
-        <p className="mt-4 text-white/20 text-xs font-bold uppercase tracking-[0.3em] pl-6">
+        <p className="mt-4 text-white/20 text-xs font-bold uppercase tracking-[0.3em] pl-5">
           {searchMode === 'local' 
             ? "Searching your sports collection" 
             : "Querying global database for live sports & World Cup streams"}
@@ -98,7 +98,7 @@ const Search = () => {
       </div>
 
       {/* Results Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-8">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 md:gap-5">
         {channels.map((channel: any) => (
           <div 
             key={channel.id || channel.tvgId || channel.streamUrl}
@@ -138,7 +138,7 @@ const Search = () => {
 
       {searchQuery && channels.length === 0 && !isLoading && (
         <div className="flex flex-col items-center justify-center py-20 text-center opacity-40">
-          <div className="w-24 h-24 bg-white/5 rounded-[2.5rem] flex items-center justify-center mb-6">
+          <div className="w-24 h-24 bg-white/5 rounded-2xl flex items-center justify-center mb-6">
             <Tv className="w-12 h-12" />
           </div>
           <p className="text-2xl font-black">No channels found for "{searchQuery}"</p>

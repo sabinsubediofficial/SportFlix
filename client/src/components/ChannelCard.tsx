@@ -77,13 +77,13 @@ const ChannelCard: React.FC<ChannelCardProps> = ({ channel, onClick, searchMode 
       onClick={() => onClick(channel)}
       className="group relative cursor-pointer"
     >
-      <div className="relative aspect-video rounded-[2rem] overflow-hidden bg-white/5 border border-white/5 group-hover:border-blue-500/50 transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:-translate-y-2">
+      <div className="relative aspect-video rounded-2xl overflow-hidden bg-white/5 border border-white/5 group-hover:border-blue-500/50 transition-all duration-500 group-hover:shadow-[0_20px_50px_rgba(0,0,0,0.5)] group-hover:-translate-y-1">
         {channel.logo && !logoFailed ? (
           <img 
             src={channel.logo} 
             alt={channel.name} 
             onError={() => setLogoFailed(true)}
-            className="w-full h-full object-contain p-8 group-hover:scale-110 transition-transform duration-700" 
+            className="w-full h-full object-contain p-6 group-hover:scale-110 transition-transform duration-700" 
           />
         ) : null}
         
@@ -95,18 +95,18 @@ const ChannelCard: React.FC<ChannelCardProps> = ({ channel, onClick, searchMode 
         ) : null}
         
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500 flex items-center justify-center">
-          <div className="w-14 h-14 bg-white rounded-full flex items-center justify-center shadow-2xl scale-50 group-hover:scale-100 transition-transform duration-500">
+          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center shadow-2xl scale-50 group-hover:scale-100 transition-transform duration-500">
             <Play className="w-6 h-6 text-black fill-current" />
           </div>
         </div>
 
         {/* Status Badge */}
-        <div className={`absolute top-4 ${searchMode === 'global' ? 'left-4' : 'right-4'} text-[9px] font-black px-2 py-0.5 rounded-full tracking-tighter uppercase shadow-xl backdrop-blur-md border transition-all duration-300 ${getStatusColor()} ${(isValidating || status === 'unknown') ? 'animate-pulse' : ''}`}>
+        <div className={`absolute top-3 ${searchMode === 'global' ? 'left-3' : 'right-3'} text-[9px] font-black px-2 py-0.5 rounded-full tracking-tighter uppercase shadow-xl backdrop-blur-md border transition-all duration-300 ${getStatusColor()} ${(isValidating || status === 'unknown') ? 'animate-pulse' : ''}`}>
           {getStatusText()}
         </div>
       </div>
       
-      <div className="mt-4 px-2">
+      <div className="mt-3 px-1">
         <h4 className="text-base font-bold text-white/90 group-hover:text-blue-400 transition-colors truncate">
           {channel.name}
         </h4>
