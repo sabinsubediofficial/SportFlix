@@ -221,6 +221,7 @@ const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>(dateTabs[0] || 'June 11');
   const [selectedLanguage, setSelectedLanguage] = useState<string>('All');
+  const [activeSubTab, setActiveSubTab] = useState<'live' | 'schedule'>('live');
 
   // Fetch general channel registry
   const { data: channels = [], isLoading } = useQuery({
@@ -309,202 +310,242 @@ const WorldCup = () => {
   return (
     <div className="min-h-screen bg-[#050505] pb-20">
       {/* World Cup Hero Banner */}
-      <div className="relative h-[380px] w-full overflow-hidden flex items-end p-12 md:p-20 bg-gradient-to-r from-amber-600/10 via-transparent to-transparent">
-        <div className="absolute top-0 left-0 w-full h-full bg-gradient-to-b from-transparent to-[#050505] pointer-events-none" />
+      <div className="relative h-[400px] w-full overflow-hidden flex items-end p-12 md:p-20">
+        {/* Background Image with Dark Golden Gradient */}
+        <div 
+          className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] scale-105"
+          style={{ 
+            backgroundImage: `url('https://images.unsplash.com/photo-1508098682722-e99c43a406b2?auto=format&fit=crop&q=80&w=2000')` 
+          }}
+        >
+          <div className="absolute inset-0 bg-gradient-to-r from-[#050505] via-[#050505]/85 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#050505] via-transparent to-black/40" />
+        </div>
         
         <div className="relative z-10 max-w-4xl">
-          <div className="flex items-center space-x-3 mb-4">
-            <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center">
-              <Trophy className="w-5 h-5 text-amber-500" />
+          <div className="flex items-center space-x-3 mb-4 animate-in fade-in duration-500">
+            <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center backdrop-blur-md">
+              <Trophy className="w-5 h-5 text-amber-500 animate-pulse" />
             </div>
-            <span className="text-amber-500 text-xs font-black uppercase tracking-[0.25em]">Live Campaign</span>
+            <span className="text-amber-500 text-xs font-black uppercase tracking-[0.25em] drop-shadow">FIFA Campaign</span>
           </div>
-          <h1 className="text-5xl md:text-7xl font-black text-white tracking-tighter drop-shadow-2xl">
-            FIFA World Cup 2026
+          <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter drop-shadow-2xl leading-none">
+            World Cup <span className="bg-gradient-to-r from-amber-400 to-yellow-600 bg-clip-text text-transparent">2026</span>
           </h1>
-          <p className="text-white/50 text-base md:text-lg max-w-xl font-medium mt-3 leading-relaxed">
-            Follow the live action starting tomorrow, June 11, 2026. Watch broadcasts, check matches, and stream directly through your preferred region.
+          <p className="text-white/60 text-base md:text-lg max-w-xl font-medium mt-4 leading-relaxed drop-shadow-sm">
+            Experience the drama, passion, and excitement of football's greatest tournament. Watch every match live, track schedules, and access premium international streams directly in one clean hub.
           </p>
         </div>
       </div>
 
-      <div className="px-12 md:px-20 max-w-7xl mx-auto space-y-16">
-        
-        {/* Match Schedule Section */}
-        <section className="space-y-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
-            <div>
-              <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                <Calendar className="text-amber-500" /> Match Schedules
-              </h2>
-              <p className="text-white/40 text-sm mt-1">Official matches for the opening days</p>
-            </div>
+      <div className="px-12 md:px-20 max-w-7xl mx-auto mt-10">
+        {/* Modern Sub-tab switcher */}
+        <div className="flex border-b border-white/5 mb-10 overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setActiveSubTab('live')}
+            className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
+              activeSubTab === 'live' ? 'text-amber-500' : 'text-white/40 hover:text-white'
+            }`}
+          >
+            <Tv className="w-5 h-5" />
+            <span>Live Broadcasts</span>
+            <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
+            {activeSubTab === 'live' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
+            )}
+          </button>
+          
+          <button
+            onClick={() => setActiveSubTab('schedule')}
+            className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
+              activeSubTab === 'schedule' ? 'text-amber-500' : 'text-white/40 hover:text-white'
+            }`}
+          >
+            <Calendar className="w-5 h-5" />
+            <span>Match Schedules</span>
+            {activeSubTab === 'schedule' && (
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
+            )}
+          </button>
+        </div>
 
-            {/* Date Tabs */}
-            <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit">
-              {dateTabs.map((date) => (
-                <button
-                  key={date}
-                  onClick={() => setSelectedDate(date)}
-                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                    selectedDate === date 
-                      ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/10' 
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  {getTabLabel(date)}
-                </button>
-              ))}
-            </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredMatches.map((match) => (
-              <div 
-                key={match.id} 
-                className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 group shadow-lg"
-              >
-                <div>
-                  <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
-                    <span>{match.group}</span>
-                    <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
-                  </div>
-
-                  {/* Teams Display */}
-                  <div className="flex items-center justify-center space-x-4 mb-4">
-                    <div className="flex items-center space-x-2 flex-1 justify-end">
-                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.homeTeam}</span>
-                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.homeFlag}</span>
-                    </div>
-                    
-                    <span className="text-white/20 font-black text-xs italic uppercase tracking-wider shrink-0">VS</span>
-                    
-                    <div className="flex items-center space-x-2 flex-1 justify-start">
-                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.awayFlag}</span>
-                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.awayTeam}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-center text-[10px] text-white/30 font-medium mb-4 truncate">
-                    📍 {match.stadium}
-                  </p>
-                </div>
-
-                {/* Broadcaster Quick Play Buttons */}
-                <div className="border-t border-white/5 pt-4">
-                  <div className="flex flex-wrap gap-2">
-                    {match.broadcasters.map((b) => {
-                      const online = isChannelOnline(b.searchKey);
-                      return (
-                        <button
-                          key={b.name}
-                          onClick={() => handleWatchChannel(b.searchKey)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all border ${
-                            online 
-                              ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500 hover:text-black cursor-pointer' 
-                              : 'bg-white/5 text-white/30 border-white/5 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20'
-                          }`}
-                        >
-                          <Play size={8} className="fill-current" />
-                          <span>{b.name}</span>
-                          <span className={`w-1 h-1 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+        {activeSubTab === 'schedule' ? (
+          /* Match Schedule Section */
+          <section className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
+              <div>
+                <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+                  <Calendar className="text-amber-500" /> Match Schedules
+                </h2>
+                <p className="text-white/40 text-sm mt-1">Official matches for the opening days</p>
               </div>
-            ))}
-          </div>
-        </section>
 
-        {/* Channels Section */}
-        <section className="space-y-8">
-          <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-4">
-            <div>
-              <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                <Tv className="text-blue-500" /> World Cup Broadcast Library
-              </h2>
-              <p className="text-white/40 text-sm mt-1">Dedicated channels allocated for global streams</p>
-            </div>
-
-            {/* Language Tabs */}
-            <div className="flex flex-wrap gap-2">
-              {[
-                { code: 'All', name: 'All', flag: '🌍' },
-                { code: 'English', name: 'English', flag: '🇬🇧' },
-                { code: 'Spanish', name: 'Spanish', flag: '🇪🇸' },
-                { code: 'Portuguese', name: 'Portuguese', flag: '🇵🇹' },
-                { code: 'German', name: 'German', flag: '🇩🇪' },
-                { code: 'Chinese', name: 'Chinese', flag: '🇨🇳' },
-                { code: 'Indonesian', name: 'Indonesian', flag: '🇮🇩' },
-                { code: 'Turkish', name: 'Turkish', flag: '🇹🇷' },
-                { code: 'Thai', name: 'Thai', flag: '🇹🇭' }
-              ].map((lang) => (
-                <button
-                  key={lang.code}
-                  onClick={() => setSelectedLanguage(lang.code)}
-                  className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
-                    selectedLanguage === lang.code
-                      ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20'
-                      : 'bg-white/5 text-white/60 border-white/5 hover:text-white hover:bg-white/10'
-                  }`}
-                >
-                  <span>{lang.flag}</span>
-                  <span>{lang.name}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-
-          {/* Working Streams */}
-          <div className="space-y-6">
-            <h3 className="text-sm font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2 border-b border-white/5 pb-2">
-              <Activity size={16} /> Online Streams
-            </h3>
-            {workingChannels.length === 0 ? (
-              <div className="flex items-center gap-3 p-6 bg-white/5 border border-white/5 rounded-2xl text-white/40">
-                <AlertCircle size={20} />
-                <p className="font-bold text-sm">No channels are currently online. Running validators shortly...</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-                {workingChannels.map(channel => (
-                  <div key={channel.id} className="virtual-card-container">
-                    <ChannelCard 
-                      channel={channel} 
-                      onClick={openPlayer} 
-                    />
-                  </div>
+              {/* Date Tabs */}
+              <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit">
+                {dateTabs.map((date) => (
+                  <button
+                    key={date}
+                    onClick={() => setSelectedDate(date)}
+                    className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
+                      selectedDate === date 
+                        ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/10' 
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {getTabLabel(date)}
+                  </button>
                 ))}
               </div>
-            )}
-          </div>
+            </div>
 
-          {/* Offline/Dead Streams */}
-          <div className="space-y-6 pt-6">
-            <h3 className="text-sm font-black text-rose-500 uppercase tracking-widest flex items-center gap-2 border-b border-white/5 pb-2">
-              <AlertCircle size={16} /> Offline / Restricted Streams
-            </h3>
-            {offlineChannels.length === 0 ? (
-              <div className="flex items-center gap-3 p-6 bg-white/5 border border-white/5 rounded-2xl text-white/40">
-                <AlertCircle size={20} />
-                <p className="font-bold text-sm">All selected library streams are online.</p>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 opacity-60">
-                {offlineChannels.map(channel => (
-                  <div key={channel.id} className="virtual-card-container">
-                    <ChannelCard 
-                      channel={channel} 
-                      onClick={openPlayer} 
-                    />
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredMatches.map((match) => (
+                <div 
+                  key={match.id} 
+                  className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 group shadow-lg"
+                >
+                  <div>
+                    <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
+                      <span>{match.group}</span>
+                      <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
+                    </div>
+
+                    {/* Teams Display */}
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <div className="flex items-center space-x-2 flex-1 justify-end">
+                        <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.homeTeam}</span>
+                        <span className="text-2xl filter drop-shadow-md shrink-0">{match.homeFlag}</span>
+                      </div>
+                      
+                      <span className="text-white/20 font-black text-xs italic uppercase tracking-wider shrink-0">VS</span>
+                      
+                      <div className="flex items-center space-x-2 flex-1 justify-start">
+                        <span className="text-2xl filter drop-shadow-md shrink-0">{match.awayFlag}</span>
+                        <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.awayTeam}</span>
+                      </div>
+                    </div>
+
+                    <p className="text-center text-[10px] text-white/30 font-medium mb-4 truncate">
+                      📍 {match.stadium}
+                    </p>
                   </div>
+
+                  {/* Broadcaster Quick Play Buttons */}
+                  <div className="border-t border-white/5 pt-4">
+                    <div className="flex flex-wrap gap-2">
+                      {match.broadcasters.map((b) => {
+                        const online = isChannelOnline(b.searchKey);
+                        return (
+                          <button
+                            key={b.name}
+                            onClick={() => handleWatchChannel(b.searchKey)}
+                            className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all border ${
+                              online 
+                                ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500 hover:text-black cursor-pointer' 
+                                : 'bg-white/5 text-white/30 border-white/5 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20'
+                            }`}
+                          >
+                            <Play size={8} className="fill-current" />
+                            <span>{b.name}</span>
+                            <span className={`w-1 h-1 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`} />
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        ) : (
+          /* Broadcast Library Section */
+          <section className="space-y-8 animate-in fade-in slide-in-from-bottom-2 duration-500">
+            <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-4">
+              <div>
+                <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
+                  <Tv className="text-blue-500" /> World Cup Broadcast Library
+                </h2>
+                <p className="text-white/40 text-sm mt-1">Dedicated channels allocated for global streams</p>
+              </div>
+
+              {/* Language Tabs */}
+              <div className="flex flex-wrap gap-2">
+                {[
+                  { code: 'All', name: 'All', flag: '🌍' },
+                  { code: 'English', name: 'English', flag: '🇬🇧' },
+                  { code: 'Spanish', name: 'Spanish', flag: '🇪🇸' },
+                  { code: 'Portuguese', name: 'Portuguese', flag: '🇵🇹' },
+                  { code: 'German', name: 'German', flag: '🇩🇪' },
+                  { code: 'Chinese', name: 'Chinese', flag: '🇨🇳' },
+                  { code: 'Indonesian', name: 'Indonesian', flag: '🇮🇩' },
+                  { code: 'Turkish', name: 'Turkish', flag: '🇹🇷' },
+                  { code: 'Thai', name: 'Thai', flag: '🇹🇭' }
+                ].map((lang) => (
+                  <button
+                    key={lang.code}
+                    onClick={() => setSelectedLanguage(lang.code)}
+                    className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all border ${
+                      selectedLanguage === lang.code
+                        ? 'bg-blue-600 text-white border-blue-500 shadow-lg shadow-blue-500/20'
+                        : 'bg-white/5 text-white/60 border-white/5 hover:text-white hover:bg-white/10'
+                    }`}
+                  >
+                    <span>{lang.flag}</span>
+                    <span>{lang.name}</span>
+                  </button>
                 ))}
               </div>
-            )}
-          </div>
-        </section>
+            </div>
+
+            {/* Working Streams */}
+            <div className="space-y-6">
+              <h3 className="text-sm font-black text-emerald-500 uppercase tracking-widest flex items-center gap-2 border-b border-white/5 pb-2">
+                <Activity size={16} /> Online Streams
+              </h3>
+              {workingChannels.length === 0 ? (
+                <div className="flex items-center gap-3 p-6 bg-white/5 border border-white/5 rounded-2xl text-white/40">
+                  <AlertCircle size={20} />
+                  <p className="font-bold text-sm">No channels are currently online. Running validators shortly...</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+                  {workingChannels.map(channel => (
+                    <div key={channel.id} className="virtual-card-container">
+                      <ChannelCard 
+                        channel={channel} 
+                        onClick={openPlayer} 
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+
+            {/* Offline/Dead Streams */}
+            <div className="space-y-6 pt-6">
+              <h3 className="text-sm font-black text-rose-500 uppercase tracking-widest flex items-center gap-2 border-b border-white/5 pb-2">
+                <AlertCircle size={16} /> Offline / Restricted Streams
+              </h3>
+              {offlineChannels.length === 0 ? (
+                <div className="flex items-center gap-3 p-6 bg-white/5 border border-white/5 rounded-2xl text-white/40">
+                  <AlertCircle size={20} />
+                  <p className="font-bold text-sm">All selected library streams are online.</p>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 opacity-60">
+                  {offlineChannels.map(channel => (
+                    <div key={channel.id} className="virtual-card-container">
+                      <ChannelCard 
+                        channel={channel} 
+                        onClick={openPlayer} 
+                      />
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </section>
+        )}
       </div>
     </div>
   );
