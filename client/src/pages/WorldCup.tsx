@@ -301,7 +301,7 @@ const WorldCup = () => {
     <div className="flex items-center justify-center h-screen bg-[#050505]">
       <div className="relative">
         <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
-        <div className="absolute inset-0 w-24 h-24 border-t-2 border-amber-500 rounded-full animate-spin" />
+        <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
         <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading Cup Schedules</div>
       </div>
     </div>
@@ -324,13 +324,13 @@ const WorldCup = () => {
         
         <div className="relative z-10 max-w-4xl">
           <div className="flex items-center space-x-3 mb-4 animate-in fade-in duration-500">
-            <div className="w-10 h-10 bg-amber-500/20 border border-amber-500/30 rounded-xl flex items-center justify-center backdrop-blur-md">
-              <Trophy className="w-5 h-5 text-amber-500 animate-pulse" />
+            <div className="w-10 h-10 bg-blue-500/20 border border-blue-500/30 rounded-xl flex items-center justify-center backdrop-blur-md">
+              <Trophy className="w-5 h-5 text-blue-500 animate-pulse" />
             </div>
-            <span className="text-amber-500 text-xs font-black uppercase tracking-[0.25em] drop-shadow">FIFA Campaign</span>
+            <span className="text-blue-500 text-xs font-black uppercase tracking-[0.25em] drop-shadow">FIFA Campaign</span>
           </div>
           <h1 className="text-6xl md:text-8xl font-black text-white tracking-tighter drop-shadow-2xl leading-none">
-            World Cup <span className="bg-gradient-to-r from-amber-400 to-yellow-600 bg-clip-text text-transparent">2026</span>
+            World Cup <span className="bg-gradient-to-r from-blue-400 to-indigo-600 bg-clip-text text-transparent">2026</span>
           </h1>
           <p className="text-white/60 text-base md:text-lg max-w-xl font-medium mt-4 leading-relaxed drop-shadow-sm">
             Experience the drama, passion, and excitement of football's greatest tournament. Watch every match live, track schedules, and access premium international streams directly in one clean hub.
@@ -344,27 +344,27 @@ const WorldCup = () => {
           <button
             onClick={() => setActiveSubTab('live')}
             className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
-              activeSubTab === 'live' ? 'text-amber-500' : 'text-white/40 hover:text-white'
+              activeSubTab === 'live' ? 'text-blue-500' : 'text-white/40 hover:text-white'
             }`}
           >
             <Tv className="w-5 h-5" />
             <span>Live Broadcasts</span>
             <span className="flex h-2 w-2 rounded-full bg-emerald-500 animate-pulse" />
             {activeSubTab === 'live' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />
             )}
           </button>
           
           <button
             onClick={() => setActiveSubTab('schedule')}
             className={`relative pb-4 px-6 font-black tracking-tight text-lg transition-all flex items-center space-x-2 shrink-0 ${
-              activeSubTab === 'schedule' ? 'text-amber-500' : 'text-white/40 hover:text-white'
+              activeSubTab === 'schedule' ? 'text-blue-500' : 'text-white/40 hover:text-white'
             }`}
           >
             <Calendar className="w-5 h-5" />
             <span>Match Schedules</span>
             {activeSubTab === 'schedule' && (
-              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-amber-500 rounded-full" />
+              <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-blue-500 rounded-full" />
             )}
           </button>
         </div>
@@ -375,7 +375,7 @@ const WorldCup = () => {
             <div className="flex flex-col md:flex-row md:items-center justify-between gap-6 border-b border-white/5 pb-6">
               <div>
                 <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
-                  <Calendar className="text-amber-500" /> Match Schedules
+                  <Calendar className="text-blue-500" /> Match Schedules
                 </h2>
                 <p className="text-white/40 text-sm mt-1">Official matches for the opening days</p>
               </div>
@@ -388,7 +388,7 @@ const WorldCup = () => {
                     onClick={() => setSelectedDate(date)}
                     className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
                       selectedDate === date 
-                        ? 'bg-amber-500 text-black shadow-lg shadow-amber-500/10' 
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
                         : 'text-white/60 hover:text-white hover:bg-white/5'
                     }`}
                   >
@@ -402,7 +402,7 @@ const WorldCup = () => {
               {filteredMatches.map((match) => (
                 <div 
                   key={match.id} 
-                  className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-amber-500/20 transition-all duration-300 group shadow-lg"
+                  className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 group shadow-lg"
                 >
                   <div>
                     <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
@@ -441,7 +441,7 @@ const WorldCup = () => {
                             onClick={() => handleWatchChannel(b.searchKey)}
                             className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all border ${
                               online 
-                                ? 'bg-amber-500/10 text-amber-500 border-amber-500/20 hover:bg-amber-500 hover:text-black cursor-pointer' 
+                                ? 'bg-blue-500/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white cursor-pointer' 
                                 : 'bg-white/5 text-white/30 border-white/5 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20'
                             }`}
                           >

@@ -81,7 +81,7 @@ const Scoreboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-12 md:px-20 max-w-7xl mx-auto space-y-16">
+      <div className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto space-y-8 md:space-y-12">
         {/* Info Alert */}
         <div className="flex items-start gap-4 p-6 bg-white/5 border border-white/5 rounded-3xl text-white/50 max-w-3xl">
           <Info className="w-6 h-6 text-indigo-400 shrink-0 mt-0.5" />
@@ -94,15 +94,15 @@ const Scoreboard: React.FC = () => {
         </div>
 
         {/* Groups Grid */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
           {groups.map((group) => (
             <div 
               key={group.name} 
-              className="bg-white/5 border border-white/5 rounded-[2.5rem] p-8 space-y-6 shadow-2xl hover:border-white/10 transition-colors duration-300"
+              className="bg-white/5 border border-white/5 rounded-3xl p-6 md:p-8 space-y-6 shadow-2xl hover:border-white/10 transition-colors duration-300"
             >
               <div className="flex justify-between items-center border-b border-white/5 pb-4">
                 <h2 className="text-2xl font-black text-white tracking-tight flex items-center gap-3">
-                  <Trophy className="w-6 h-6 text-amber-500" /> {group.name}
+                  <Trophy className="w-6 h-6 text-blue-500" /> {group.name}
                 </h2>
                 <span className="text-[10px] font-black uppercase tracking-widest text-white/30">Standings</span>
               </div>
@@ -143,9 +143,11 @@ const Scoreboard: React.FC = () => {
                             </span>
                           </td>
                           {/* Team Name */}
-                          <td className="py-4 font-bold text-white flex items-center gap-3">
-                            <span className="text-2xl filter drop-shadow-sm">{team.flag}</span>
-                            <span>{team.name}</span>
+                          <td className="py-4 font-bold text-white">
+                            <div className="flex items-center gap-3">
+                              <span className="text-2xl filter drop-shadow-sm">{team.flag}</span>
+                              <span>{team.name}</span>
+                            </div>
                           </td>
                           {/* Stats */}
                           <td className="py-4 text-center font-medium text-white/60">{team.played}</td>

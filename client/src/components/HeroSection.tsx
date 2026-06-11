@@ -17,9 +17,9 @@ const HeroSection: React.FC<HeroSectionProps> = ({ featuredChannel, onWatchNow }
       <div className="absolute top-10 right-12 md:right-20 z-20">
         <Link 
           to="/worldcup"
-          className="bg-amber-500 hover:bg-amber-400 text-black font-black px-6 py-3.5 rounded-2xl flex items-center space-x-2.5 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-amber-500/20 border border-amber-400/50 group/btn"
+          className="bg-blue-600 hover:bg-blue-500 text-white font-black px-6 py-3.5 rounded-2xl flex items-center space-x-2.5 transition-all transform hover:scale-105 active:scale-95 shadow-xl shadow-blue-600/20 border border-blue-500/50 group/btn"
         >
-          <Trophy className="w-5 h-5 text-black animate-bounce" />
+          <Trophy className="w-5 h-5 text-white animate-bounce" />
           <span className="text-sm tracking-wider uppercase font-extrabold">Watch World Cup Live Here</span>
         </Link>
       </div>
