@@ -5,12 +5,8 @@ services:
     rootDir: server
     buildCommand: npm install && npx prisma migrate deploy && npm run build
     startCommand: npm start
-    disk:
-      name: db-volume
-      mountPath: /var/data
-      sizeGB: 1
     envVars:
       - key: PORT
         value: 5000
       - key: DATABASE_URL
-        value: file:/var/data/dev.db
+        value: file:./prisma/dev.db
