@@ -95,24 +95,20 @@ const Scoreboard: React.FC = () => {
       awayTeam: 'South Africa',
       homeFlag: '🇲🇽',
       awayFlag: '🇿🇦',
-      homeScore: 1,
-      awayScore: 1,
-      minute: 74,
-      status: 'LIVE',
+      homeScore: 0,
+      awayScore: 0,
+      minute: 0,
+      status: 'UPCOMING',
       stadium: 'Estadio Azteca, Mexico City',
       group: 'Group A',
       stats: {
-        possession: [55, 45],
-        shots: [14, 9],
-        shotsOnTarget: [6, 4],
-        corners: [5, 3],
-        fouls: [10, 11]
+        possession: [50, 50],
+        shots: [0, 0],
+        shotsOnTarget: [0, 0],
+        corners: [0, 0],
+        fouls: [0, 0]
       },
-      timeline: [
-        { minute: 14, type: 'goal', team: 'away', detail: 'Goal! South Africa - Lyle Foster (Assist: Percy Tau)' },
-        { minute: 38, type: 'card-yellow', team: 'home', detail: 'Yellow Card - Mexico: Edson Álvarez' },
-        { minute: 45, type: 'goal', team: 'home', detail: 'Goal! Mexico - Santiago Giménez (Header)' }
-      ]
+      timeline: []
     },
     {
       id: 'm2',
