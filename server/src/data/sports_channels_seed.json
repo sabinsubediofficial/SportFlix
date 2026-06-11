@@ -2842,5 +2842,95 @@
     "tvgId": "RTP1",
     "status": "online",
     "popularity": 25
+  },
+  {
+    "name": "Azteca Internacional",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/ec/TV_Azteca_logo_2015.png",
+    "groupTitle": "Sports",
+    "streamUrl": "https://azt-mun.otteravision.com/azt/mun/mun.m3u8",
+    "tvgId": "AztecaInternacional.mx",
+    "status": "online",
+    "popularity": 80
+  },
+  {
+    "name": "SBS One (Australia)",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/SBS_Australia_logo_2019.svg/1024px-SBS_Australia_logo_2019.svg.png",
+    "groupTitle": "Sports",
+    "streamUrl": "https://namdhari.tv/live/sbs1.m3u8",
+    "tvgId": "SBS1.au",
+    "status": "online",
+    "popularity": 75
+  },
+  {
+    "name": "TSN SPORTS FHD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
+    "groupTitle": "Sports",
+    "streamUrl": "https://d3pnbvng3bx2nj.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-rds8g35qfqrnv/TSN_The_Ocho.m3u8",
+    "tvgId": "TSNSportsFHD.ca",
+    "status": "online",
+    "popularity": 90
+  },
+  {
+    "name": "TELEMUNDO FHD",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/2/29/Telemundo_logo.svg",
+    "groupTitle": "Sports",
+    "streamUrl": "https://nbcu-telemundoflorida-firetv.amagi.tv/playlist.m3u8",
+    "tvgId": "TelemundoFHD.us",
+    "status": "online",
+    "popularity": 90
+  },
+  {
+    "name": "SporTV BR",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Logo_SporTV.png",
+    "groupTitle": "Sports",
+    "streamUrl": "https://stm.sinalmycn.com/19024/video.m3u8",
+    "tvgId": "SporTVBR.br",
+    "status": "online",
+    "popularity": 85
+  },
+  {
+    "name": "CAZE TV FHD",
+    "logo": "https://upload.wikimedia.org/wikipedia/en/thumb/6/64/Caz%C3%A9TV_logo.svg/1280px-Caz%C3%A9TV_logo.svg.png",
+    "groupTitle": "Sports",
+    "streamUrl": "https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8",
+    "tvgId": "CazeTVFHD.br",
+    "status": "online",
+    "popularity": 85
+  },
+  {
+    "name": "TSN SPORTS",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
+    "groupTitle": "Sports",
+    "streamUrl": "https://59d8c0cee6f3d.streamlock.net/tsn/tsn_mobile/playlist.m3u8",
+    "tvgId": "TSNSports.ca",
+    "status": "online",
+    "popularity": 80
+  },
+  {
+    "name": "TSN SPORTS 3",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
+    "groupTitle": "Sports",
+    "streamUrl": "https://d3pnbvng3bx2nj.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-rds8g35qfqrnv/TSN_The_Ocho.m3u8",
+    "tvgId": "TSNSports3.ca",
+    "status": "online",
+    "popularity": 80
+  },
+  {
+    "name": "BTV BDIX",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/a/a2/Logo_of_Bangladesh_Television.svg",
+    "groupTitle": "Sports",
+    "streamUrl": "https://xtdslboppkkv-pull.bpmedialive.com/live/btv/abr.m3u8",
+    "tvgId": "BTVBDIX.bd",
+    "status": "online",
+    "popularity": 70
+  },
+  {
+    "name": "Somoy TV",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/ec/Somoy_TV_logo.png",
+    "groupTitle": "Sports",
+    "streamUrl": "https://bozztv.com/rongo/rongo-somoy/index.m3u8",
+    "tvgId": "SomoyTV.bd",
+    "status": "online",
+    "popularity": 70
   }
 ]
