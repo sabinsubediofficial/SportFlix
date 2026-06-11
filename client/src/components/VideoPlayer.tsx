@@ -130,8 +130,9 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
     setError(null);
     setIsBuffering(true);
 
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     const streamUrl = useProxy 
-      ? `http://localhost:5000/api/channels/stream-proxy?url=${encodeURIComponent(url)}` 
+      ? `${apiBase}/channels/stream-proxy?url=${encodeURIComponent(url)}` 
       : url;
 
     const setupHls = () => {

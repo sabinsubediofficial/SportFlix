@@ -47,6 +47,9 @@ router.get('/stream-proxy', async (req, res) => {
 
       response.data.on('end', () => {
         const lines = dataStr.split('\n');
+        const protocol = req.headers['x-forwarded-proto'] || req.protocol;
+        const backendUrl = `${protocol}://${req.get('host')}`;
+        
         const rewrittenLines = lines.map(line => {
           const trimmed = line.trim();
           if (!trimmed) return line;
@@ -62,7 +65,7 @@ router.get('/stream-proxy', async (req, res) => {
                   return match;
                 }
               }
-              return `URI="http://localhost:5000/api/channels/stream-proxy?url=${encodeURIComponent(absoluteUrl)}"`;
+              return `URI="${backendUrl}/api/channels/stream-proxy?url=${encodeURIComponent(absoluteUrl)}"`;
             });
           } else {
             // It's a stream segment or sub-playlist URL
@@ -74,7 +77,7 @@ router.get('/stream-proxy', async (req, res) => {
                 return line;
               }
             }
-            return `http://localhost:5000/api/channels/stream-proxy?url=${encodeURIComponent(absoluteUrl)}`;
+            return `${backendUrl}/api/channels/stream-proxy?url=${encodeURIComponent(absoluteUrl)}`;
           }
         });
 
