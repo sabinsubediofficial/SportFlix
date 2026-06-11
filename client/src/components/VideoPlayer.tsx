@@ -10,7 +10,8 @@ import {
   ExternalLink,
   AlertCircle,
   Loader2,
-  ChevronLeft
+  ChevronLeft,
+  Subtitles
 } from 'lucide-react';
 
 interface VideoPlayerProps {
@@ -55,7 +56,37 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
   const [showControls, setShowControls] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [useProxy, setUseProxy] = useState(false);
+  const [subtitlesEnabled, setSubtitlesEnabled] = useState(false); // Disabled by default
   const controlsTimeoutRef = useRef<any>(null);
+
+  const applySubtitlesState = useCallback((enabled: boolean) => {
+    if (videoRef.current) {
+      const tracks = videoRef.current.textTracks;
+      for (let i = 0; i < tracks.length; i++) {
+        tracks[i].mode = enabled ? 'showing' : 'disabled';
+      }
+    }
+  }, []);
+
+  useEffect(() => {
+    applySubtitlesState(subtitlesEnabled);
+  }, [subtitlesEnabled, applySubtitlesState]);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    const handleTrackAdded = (e: any) => {
+      if (e.track) {
+        e.track.mode = subtitlesEnabled ? 'showing' : 'disabled';
+      }
+    };
+
+    video.textTracks.addEventListener('addtrack', handleTrackAdded);
+    return () => {
+      video.textTracks.removeEventListener('addtrack', handleTrackAdded);
+    };
+  }, [subtitlesEnabled]);
 
   const togglePlay = useCallback(() => {
     if (videoRef.current) {
@@ -356,6 +387,18 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
             </div>
 
             <div className="flex items-center space-x-6">
+              {/* Subtitles CC Toggle */}
+              <button 
+                onClick={() => setSubtitlesEnabled(prev => !prev)} 
+                className={`transition-colors relative flex items-center justify-center cursor-pointer ${subtitlesEnabled ? 'text-blue-500 hover:text-blue-400' : 'text-white/80 hover:text-white'}`}
+                title={subtitlesEnabled ? "Disable Subtitles" : "Enable Subtitles"}
+              >
+                <Subtitles className="w-6 h-6" />
+                {!subtitlesEnabled && (
+                  <div className="absolute w-[26px] h-[2px] bg-red-500/80 rotate-45 rounded-full" />
+                )}
+              </button>
+
               {/* Picture-in-Picture */}
               {document.pictureInPictureEnabled && (
                 <button onClick={togglePiP} className="text-white hover:text-blue-400 transition-colors">
