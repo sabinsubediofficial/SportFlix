@@ -398,7 +398,7 @@ const Scoreboard: React.FC = () => {
         </div>
       </div>
 
-      <div className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto space-y-8 md:space-y-12">
+      <div className="px-4 sm:px-6 md:px-12 lg:px-20 max-w-7xl mx-auto pt-8 md:pt-12 space-y-8 md:space-y-12">
         {/* Info Alert */}
         <div className="flex items-start gap-4 p-6 bg-white/5 border border-white/5 rounded-3xl text-white/50 max-w-3xl">
           <Info className="w-6 h-6 text-indigo-400 shrink-0 mt-0.5" />
