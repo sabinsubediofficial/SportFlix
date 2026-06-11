@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String     @id @default(uuid())
+  email        String     @unique
+  passwordHash String
+  role         String     @default("user")
+  playlists    Playlist[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
+}
+
+model Playlist {
+  id         String    @id @default(uuid())
+  name       String
+  url        String
+  lastSynced DateTime?
+  userId     String
+  user       User      @relation(fields: [userId], references: [id])
+  channels   Channel[]
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Channel {
+  id            String    @id @default(uuid())
+  name          String
+  logo          String?
+  groupTitle    String?
+  streamUrl     String
+  tvgId         String?
+  status        String    @default("unknown") // 'online', 'offline', 'unknown'
+  lastValidated DateTime?
+  popularity    Int       @default(0)
+  playlistId    String
+  playlist      Playlist  @relation(fields: [playlistId], references: [id])
+  programs      Program[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  @@index([playlistId])
+}
+
+model EpgSource {
+  id         String    @id @default(uuid())
+  name       String
+  url        String
+  lastSynced DateTime?
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Program {
+  id          String   @id @default(uuid())
+  title       String
+  description String?
+  startTime   DateTime
+  endTime     DateTime
+  channelId   String
+  channel     Channel  @relation(fields: [channelId], references: [id])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([channelId])
+  @@index([startTime, endTime])
+  @@index([channelId, startTime, endTime])
+}
+
