@@ -22,10 +22,18 @@ const getChannelLanguage = (name: string): string => {
   if (
     lower.includes('bbc') ||
     lower.includes('itv1') ||
+    (lower.includes('itv') && !lower.includes('deportes')) ||
     lower.includes('tsn') ||
-    lower.includes('fox sports') ||
-    lower.includes('bein') ||
-    (lower.includes('itv') && lower.includes('480p'))
+    (lower.includes('fox') && !lower.includes('deportes')) ||
+    lower.includes('ctv') ||
+    (lower.includes('sbs') && !lower.includes('g1') && !lower.includes('tbc') && !lower.includes('knn') && !lower.includes('kbc') && !lower.includes('ubc') && !lower.includes('jtv') && !lower.includes('cjb') && !lower.includes('jibs')) ||
+    lower.includes('rte') ||
+    lower.includes('rté') ||
+    lower.includes('virgin media') ||
+    lower.includes('supersport') ||
+    lower.includes('sky sport') ||
+    lower.includes('now sports') ||
+    lower.includes('bein')
   ) {
     return 'English';
   }
@@ -235,17 +243,20 @@ const WorldCup = () => {
     return channels.filter(channel => {
       const name = channel.name.toLowerCase();
       return (
-        name.includes('fox deportes') ||
-        name.includes('tsn the ocho') ||
-        name.includes('itv deportes') ||
-        name.includes('t sports') ||
-        name.includes('cctv-16') ||
-        name.includes('cctv-storm football') ||
-        name.includes('fox sports 1') ||
-        name.includes('bein sports xtra') ||
+        (name.includes('fox') && !name.includes('news') && !name.includes('business') && !name.includes('weather') && !name.includes('soul')) ||
+        name.includes('tsn') ||
+        name.includes('ctv') ||
+        (name.includes('sbs') && !name.includes('g1') && !name.includes('tbc') && !name.includes('knn') && !name.includes('kbc') && !name.includes('ubc') && !name.includes('jtv') && !name.includes('cjb') && !name.includes('jibs')) ||
+        name.includes('rte') ||
+        name.includes('rté') ||
+        name.includes('virgin media') ||
+        name.includes('supersport') ||
+        name.includes('sky sport') ||
+        name.includes('now sports') ||
         name.includes('bbc one') ||
         name.includes('bbc two') ||
         name.includes('itv1') ||
+        name.includes('itv') ||
         name.includes('cazetv') ||
         name.includes('caze tv') ||
         name.includes('trt 1') ||
@@ -257,8 +268,7 @@ const WorldCup = () => {
         name.includes('das erste') ||
         name.includes('zdf') ||
         name.includes('rtp 1') ||
-        name.includes('rtp1') ||
-        (name.includes('itv') && name.includes('480p'))
+        name.includes('rtp1')
       );
     });
   }, [channels]);
