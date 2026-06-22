@@ -1563,182 +1563,567 @@
    Stream URL: https://streaming-live.rtp.pt/liverepeater/rtp1HD.smil/playlist.m3u8
    -------------------------------------------
 
-314. [ONLINE] Azteca Internacional
-   Category: Sports
-   Stream URL: https://azt-mun.otteravision.com/azt/mun/mun.m3u8
-   -------------------------------------------
-
-315. [OFFLINE] SporTV BR
-   Category: Sports
-   Stream URL: https://stm.sinalmycn.com/19024/video.m3u8
-   -------------------------------------------
-
-316. [ONLINE] CAZE TV FHD
-   Category: Sports
-   Stream URL: https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8
-   -------------------------------------------
-
-317. [ONLINE] BTV BDIX
-   Category: Sports
-   Stream URL: https://xtdslboppkkv-pull.bpmedialive.com/live/btv/abr.m3u8
-   -------------------------------------------
-
-318. [OFFLINE] Somoy TV
-   Category: Sports
-   Stream URL: https://bozztv.com/rongo/rongo-somoy/index.m3u8
-   -------------------------------------------
-
-319. [ONLINE] Azteca UNO -1 hora
-   Category: World Cup 2026
-   Stream URL: https://jmp2.uk/plu-646ccc7a2858cb0008127367.m3u8
-   -------------------------------------------
-
-320. [ONLINE] NBCU Telemundo North East
-   Category: World Cup 2026
-   Stream URL: https://nbcu-telemundonortheast-firetv.amagi.tv/playlist.m3u8
-   -------------------------------------------
-
-321. [ONLINE] NBCU Telemundo Texas
-   Category: World Cup 2026
-   Stream URL: https://nbcu-telemundotexas-firetv.amagi.tv/playlist.m3u8
-   -------------------------------------------
-
-322. [ONLINE] NBCU Telemundo West
-   Category: World Cup 2026
-   Stream URL: https://nbcu-telemundowest-firetv.amagi.tv/playlist.m3u8
-   -------------------------------------------
-
-323. [ONLINE] SBS KBC
-   Category: World Cup 2026
-   Stream URL: https://vod.ikbc.co.kr/KBCTV/tv/playlist.m3u8
-   -------------------------------------------
-
-324. [ONLINE] SBS UBC
-   Category: World Cup 2026
-   Stream URL: https://stream.ubc.co.kr/hls/ubctvstream/index.m3u8
-   -------------------------------------------
-
-325. [ONLINE] SBS JTV
-   Category: World Cup 2026
-   Stream URL: http://61.85.197.53:1935/jtv_live/myStream/playlist.m3u8
-   -------------------------------------------
-
-326. [ONLINE] SBS CJB
-   Category: World Cup 2026
-   Stream URL: http://1.222.207.80:1935/live/cjbtv/playlist.m3u8
-   -------------------------------------------
-
-327. [ONLINE] SBS JIBS
-   Category: World Cup 2026
-   Stream URL: http://123.140.197.22/stream/1/play.m3u8
-   -------------------------------------------
-
-328. [ONLINE] NBC Universo West
-   Category: World Cup 2026
-   Stream URL: http://190.11.225.124:5000/live/universo_hd/playlist.m3u8
-   -------------------------------------------
-
-329. [ONLINE] RDS Social TV
-   Category: World Cup 2026
-   Stream URL: https://stream.rdstv.radio/out/v1/ec85f72b87f04555aa41d616d5be41dc/index.m3u8
-   -------------------------------------------
-
-330. [ONLINE] Rede Globo
-   Category: World Cup 2026
-   Stream URL: https://cors-proxy.cooks.fyi/http://hls1.sua.tv/live/globotvbahiafhdbr2/s.m3u8
-   -------------------------------------------
-
-331. [ONLINE] Telemundo Corpus Christi
-   Category: World Cup 2026
-   Stream URL: https://content.uplynk.com/channel/b6a96ed39d694ae1b738faa98cf7dd3f.m3u8
-   -------------------------------------------
-
-332. [ONLINE] FOX (Local NY WNYW)
-   Category: World Cup 2026
-   Stream URL: https://aegis-cloudfront-1.tubi.video/36a435c5-f70a-411a-b237-e32738c486a8/index.m3u8
-   -------------------------------------------
-
-333. [ONLINE] FOX (Local LA KTTV)
-   Category: World Cup 2026
-   Stream URL: https://aegis-cloudfront-1.tubi.video/317a6700-b890-4066-a2e7-dea5c15fd915/index.m3u8
-   -------------------------------------------
-
-334. [ONLINE] FOX (Local SF KTVU)
-   Category: World Cup 2026
-   Stream URL: https://aegis-cloudfront-1.tubi.video/8d9284ec-c451-4e51-a1d4-d16e5c8972af/index.m3u8
-   -------------------------------------------
-
-335. [ONLINE] FOX Sports 1 (FS1)
-   Category: World Cup 2026
-   Stream URL: https://cors-proxy.cooks.fyi/http://190.11.225.124:5000/live/fs1_hd/playlist.m3u8
-   -------------------------------------------
-
-336. [ONLINE] FOX Sports 2
-   Category: World Cup 2026
-   Stream URL: https://tvsen7.aynaott.com/foxsports2/index.m3u8
-   -------------------------------------------
-
-337. [ONLINE] BBC One
+314. [ONLINE] BBC One
    Category: World Cup 2026
    Stream URL: https://vs-hls-pushb-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_one_yorks/iptv_hd_abr_v1.m3u8
    -------------------------------------------
 
-338. [ONLINE] BBC Two
+315. [ONLINE] BBC Two
    Category: World Cup 2026
    Stream URL: https://vs-hls-push-uk-live.akamaized.net/x=4/i=urn:bbc:pips:service:bbc_two_hd/iptv_hd_abr_v1.m3u8
    -------------------------------------------
 
-339. [ONLINE] ITV1
+316. [ONLINE] ITV1
    Category: World Cup 2026
    Stream URL: https://cdn10.live-tv.cloud/itvrv/abr-lq/playlist.m3u8
    -------------------------------------------
 
-340. [ONLINE] TSN Canada
-   Category: World Cup 2026
-   Stream URL: https://d3pnbvng3bx2nj.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-rds8g35qfqrnv/TSN_The_Ocho.m3u8
-   -------------------------------------------
-
-341. [ONLINE] CTV Toronto
-   Category: World Cup 2026
-   Stream URL: https://bozztv.com/teleyupp1/teleup-zxsJFt6VvY/playlist.m3u8
-   -------------------------------------------
-
-342. [ONLINE] SBS Australia
+317. [ONLINE] Sky Sports Main Event
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-343. [ONLINE] SBS Viceland
+318. [ONLINE] Sky Sports Football
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-344. [ONLINE] RTÉ Two
+319. [ONLINE] Sky Sports Premier League
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-345. [ONLINE] Virgin Media One
+320. [ONLINE] TNT Sports 1
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-346. [ONLINE] SuperSport Football
+321. [ONLINE] TNT Sports 2
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-347. [ONLINE] SuperSport Grandstand
+322. [ONLINE] TNT Sports 3
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-348. [ONLINE] Sky Sport NZ
+323. [ONLINE] TNT Sports 4
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
    -------------------------------------------
 
-349. [ONLINE] Now Sports
+324. [ONLINE] Premier Sports 1
    Category: World Cup 2026
    Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+325. [ONLINE] Premier Sports 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+326. [ONLINE] FOX
+   Category: World Cup 2026
+   Stream URL: https://aegis-cloudfront-1.tubi.video/36a435c5-f70a-411a-b237-e32738c486a8/index.m3u8
+   -------------------------------------------
+
+327. [ONLINE] FS1
+   Category: World Cup 2026
+   Stream URL: https://cors-proxy.cooks.fyi/http://190.11.225.124:5000/live/fs1_hd/playlist.m3u8
+   -------------------------------------------
+
+328. [ONLINE] FS2
+   Category: World Cup 2026
+   Stream URL: https://tvsen7.aynaott.com/foxsports2/index.m3u8
+   -------------------------------------------
+
+329. [ONLINE] ESPN
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+330. [ONLINE] ESPN2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+331. [ONLINE] ESPNews
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+332. [ONLINE] ESPNU
+   Category: World Cup 2026
+   Stream URL: http://23.237.104.106:8080/USA_ESPNU/index.m3u8
+   -------------------------------------------
+
+333. [ONLINE] CBS Sports Network
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+334. [ONLINE] NBC Sports
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+335. [ONLINE] USA Network
+   Category: World Cup 2026
+   Stream URL: http://185.246.209.113/DISCOVERYHD/index.m3u8
+   -------------------------------------------
+
+336. [ONLINE] NBC Universo
+   Category: World Cup 2026
+   Stream URL: http://190.11.225.124:5000/live/universo_hd/playlist.m3u8
+   -------------------------------------------
+
+337. [ONLINE] Golf Channel
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+338. [ONLINE] NFL Network
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+339. [ONLINE] NBA TV
+   Category: World Cup 2026
+   Stream URL: https://pb-5pdyic0cu7tri.akamaized.net/NBA.m3u8
+   -------------------------------------------
+
+340. [ONLINE] TSN 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+341. [ONLINE] TSN 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+342. [ONLINE] TSN 3
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+343. [ONLINE] TSN 4
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+344. [ONLINE] TSN 5
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+345. [ONLINE] Sportsnet
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+346. [ONLINE] Sportsnet One
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+347. [ONLINE] Sportsnet World
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+348. [ONLINE] beIN Sports Canada
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+349. [ONLINE] SBS Australia
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+350. [ONLINE] SBS Viceland
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+351. [ONLINE] Sky Sport 1 NZ
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+352. [ONLINE] Sky Sport 2 NZ
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+353. [ONLINE] Sky Sport 3 NZ
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+354. [ONLINE] Sky Sport 4 NZ
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+355. [ONLINE] ESPN Australia
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+356. [ONLINE] Fox Sports 501
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+357. [ONLINE] Fox Sports 502
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+358. [ONLINE] Fox Sports 503
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+359. [ONLINE] Sony Sports Ten 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+360. [ONLINE] Sony Sports Ten 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+361. [ONLINE] Sony Sports Ten 5
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+362. [ONLINE] Star Sports 1
+   Category: World Cup 2026
+   Stream URL: https://tvsen7.aynaott.com/sspts1/index.m3u8
+   -------------------------------------------
+
+363. [ONLINE] Star Sports Select 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+364. [ONLINE] Star Sports Select 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+365. [ONLINE] Eurosport India
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+366. [ONLINE] beIN Sports 1 English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+367. [ONLINE] beIN Sports 2 English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+368. [ONLINE] beIN Sports 3 English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+369. [ONLINE] beIN Sports Xtra
+   Category: World Cup 2026
+   Stream URL: https://bein-xtra-xumo.amagi.tv/playlist.m3u8
+   -------------------------------------------
+
+370. [ONLINE] Alkass Sports
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+371. [ONLINE] Abu Dhabi Sports English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+372. [ONLINE] SuperSport Football
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+373. [ONLINE] SuperSport Premier League
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+374. [ONLINE] SuperSport Variety 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+375. [ONLINE] SuperSport Variety 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+376. [ONLINE] SuperSport Grandstand
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+377. [ONLINE] ESPN Africa
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+378. [ONLINE] Canal+ Sport English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+379. [ONLINE] Eurosport 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+380. [ONLINE] Eurosport 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+381. [ONLINE] Viaplay Sports 1
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+382. [ONLINE] Viaplay Sports 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+383. [ONLINE] Viaplay Sports 3
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+384. [ONLINE] Viaplay Sports 4
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+385. [ONLINE] Viaplay Xtra
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+386. [ONLINE] DAZN English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+387. [ONLINE] OneFootball TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+388. [ONLINE] MUTV
+   Category: World Cup 2026
+   Stream URL: https://bcovlive-a.akamaihd.net/r2d2c4ca5bf57456fb1d16255c1a535c8/eu-west-1/6058004203001/playlist.m3u8
+   -------------------------------------------
+
+389. [ONLINE] LFCTV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+390. [ONLINE] Real Madrid TV English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+391. [ONLINE] Chelsea TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+392. [ONLINE] Arsenal TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+393. [ONLINE] Bundesliga English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+394. [ONLINE] Serie A English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+395. [ONLINE] LaLiga TV
+   Category: World Cup 2026
+   Stream URL: http://162.19.255.233:8080/play/UNbAl57p9hXZClOu56FCTZID4SFOqZLZ81NguVP-JxM/m3u8
+   -------------------------------------------
+
+396. [ONLINE] FIFA TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+397. [ONLINE] UEFA TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+398. [ONLINE] AFN Sports
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+399. [ONLINE] AFN Sports 2
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+400. [ONLINE] Racing TV
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+401. [ONLINE] Sky Sports Racing
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+402. [ONLINE] World Sport
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+403. [ONLINE] CBS Sports Golazo
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+404. [ONLINE] ESPN Deportes SAP English
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+405. [ONLINE] TNT Sports Ultimate
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+406. [ONLINE] Fox Soccer Plus
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+407. [ONLINE] Willow Xtra
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+408. [ONLINE] Arena Sport English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+409. [ONLINE] Premier Football
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+410. [ONLINE] Sportdigital Fußball English Feed
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+411. [ONLINE] FreeSports
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+412. [ONLINE] Himalaya Sports
+   Category: World Cup 2026
+   Stream URL: https://test-streams.mux.dev/x36xhq/x36xhq.m3u8
+   -------------------------------------------
+
+413. [ONLINE] CazeTV
+   Category: World Cup 2026
+   Stream URL: https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8
+   -------------------------------------------
+
+414. [ONLINE] TRT 1
+   Category: World Cup 2026
+   Stream URL: https://tv-trt1.medya.trt.com.tr/master.m3u8
+   -------------------------------------------
+
+415. [ONLINE] Telemundo PR
+   Category: World Cup 2026
+   Stream URL: https://nbculocallive.akamaized.net/hls/live/2037499/puertorico/stream1/master.m3u8
+   -------------------------------------------
+
+416. [ONLINE] NBCU Telemundo Florida
+   Category: World Cup 2026
+   Stream URL: https://nbcu-telemundoflorida-firetv.amagi.tv/playlist.m3u8
+   -------------------------------------------
+
+417. [ONLINE] Das Erste HD
+   Category: World Cup 2026
+   Stream URL: https://daserste-live.ard-mcdn.de/daserste/live/hls/int/master.m3u8
+   -------------------------------------------
+
+418. [OFFLINE] ZDF HD
+   Category: World Cup 2026
+   Stream URL: https://zdf-hls-15.akamaized.net/hls/live/2016498/de/high/master.m3u8
+   -------------------------------------------
+
+419. [ONLINE] RTP 1 HD
+   Category: World Cup 2026
+   Stream URL: https://streaming-live.rtp.pt/liverepeater/rtp1HD.smil/playlist.m3u8
+   -------------------------------------------
+
+420. [ONLINE] Azteca Internacional
+   Category: World Cup 2026
+   Stream URL: https://azt-mun.otteravision.com/azt/mun/mun.m3u8
+   -------------------------------------------
+
+421. [ONLINE] CAZE TV FHD
+   Category: World Cup 2026
+   Stream URL: https://dfr80qz435crc.cloudfront.net/MNOP/Amagi/Caze/Caze_TV_BR/Caze_TV.m3u8
+   -------------------------------------------
+
+422. [ONLINE] NBCU Telemundo North East
+   Category: World Cup 2026
+   Stream URL: https://nbcu-telemundonortheast-firetv.amagi.tv/playlist.m3u8
+   -------------------------------------------
+
+423. [ONLINE] NBCU Telemundo Texas
+   Category: World Cup 2026
+   Stream URL: https://nbcu-telemundotexas-firetv.amagi.tv/playlist.m3u8
+   -------------------------------------------
+
+424. [ONLINE] NBCU Telemundo West
+   Category: World Cup 2026
+   Stream URL: https://nbcu-telemundowest-firetv.amagi.tv/playlist.m3u8
+   -------------------------------------------
+
+425. [ONLINE] Rede Globo
+   Category: World Cup 2026
+   Stream URL: https://cors-proxy.cooks.fyi/http://hls1.sua.tv/live/globotvbahiafhdbr2/s.m3u8
+   -------------------------------------------
+
+426. [ONLINE] Telemundo Corpus Christi
+   Category: World Cup 2026
+   Stream URL: https://content.uplynk.com/channel/b6a96ed39d694ae1b738faa98cf7dd3f.m3u8
    -------------------------------------------

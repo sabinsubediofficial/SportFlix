@@ -20,33 +20,18 @@ interface Match {
 const getChannelLanguage = (name: string): string => {
   const lower = name.toLowerCase();
   if (
-    lower.includes('bbc') ||
-    lower.includes('itv1') ||
-    (lower.includes('itv') && !lower.includes('deportes')) ||
-    lower.includes('tsn') ||
-    (lower.includes('fox') && !lower.includes('deportes')) ||
-    lower.includes('ctv') ||
-    (lower.includes('sbs') && !lower.includes('g1') && !lower.includes('tbc') && !lower.includes('knn') && !lower.includes('kbc') && !lower.includes('ubc') && !lower.includes('jtv') && !lower.includes('cjb') && !lower.includes('jibs')) ||
-    (lower.includes('rte') && !lower.includes('deportes')) ||
-    lower.includes('rté') ||
-    lower.includes('virgin media') ||
-    lower.includes('supersport') ||
-    lower.includes('sky sport') ||
-    lower.includes('now sports') ||
-    lower.includes('bein')
-  ) {
-    return 'English';
-  }
-  if (
     lower.includes('telemundo') ||
     lower.includes('fox deportes') ||
-    lower.includes('itv deportes')
+    lower.includes('itv deportes') ||
+    lower.includes('azteca') ||
+    lower.includes('universo')
   ) {
     return 'Spanish';
   }
   if (
     lower.includes('caze') ||
-    lower.includes('rtp')
+    lower.includes('rtp') ||
+    lower.includes('globo')
   ) {
     return 'Portuguese';
   }
@@ -76,7 +61,8 @@ const getChannelLanguage = (name: string): string => {
   ) {
     return 'German';
   }
-  return 'Other';
+  // All other seeded World Cup channels are in English
+  return 'English';
 };
 
 const matches: Match[] = [
@@ -241,34 +227,9 @@ const WorldCup = () => {
   // Filter World Cup specific channels
   const wcChannels = useMemo(() => {
     return channels.filter(channel => {
-      const name = channel.name.toLowerCase();
       return (
-        (name.includes('fox') && !name.includes('news') && !name.includes('business') && !name.includes('weather') && !name.includes('soul')) ||
-        name.includes('tsn') ||
-        name.includes('ctv') ||
-        (name.includes('sbs') && !name.includes('g1') && !name.includes('tbc') && !name.includes('knn') && !name.includes('kbc') && !name.includes('ubc') && !name.includes('jtv') && !name.includes('cjb') && !name.includes('jibs')) ||
-        (name.includes('rte') && !name.includes('deportes')) ||
-        name.includes('rté') ||
-        name.includes('virgin media') ||
-        name.includes('supersport') ||
-        name.includes('sky sport') ||
-        name.includes('now sports') ||
-        name.includes('bbc one') ||
-        name.includes('bbc two') ||
-        name.includes('itv1') ||
-        name.includes('itv') ||
-        name.includes('cazetv') ||
-        name.includes('caze tv') ||
-        name.includes('trt 1') ||
-        name.includes('trt1') ||
-        name.includes('trt spor') ||
-        name.includes('tvri') ||
-        name.includes('thai pbs') ||
-        name.includes('telemundo') ||
-        name.includes('das erste') ||
-        name.includes('zdf') ||
-        name.includes('rtp 1') ||
-        name.includes('rtp1')
+        channel.groupTitle === 'World Cup 2026' ||
+        channel.groupTitle === 'World Cup'
       );
     });
   }, [channels]);
