@@ -27,7 +27,7 @@ const getChannelLanguage = (name: string): string => {
     (lower.includes('fox') && !lower.includes('deportes')) ||
     lower.includes('ctv') ||
     (lower.includes('sbs') && !lower.includes('g1') && !lower.includes('tbc') && !lower.includes('knn') && !lower.includes('kbc') && !lower.includes('ubc') && !lower.includes('jtv') && !lower.includes('cjb') && !lower.includes('jibs')) ||
-    lower.includes('rte') ||
+    (lower.includes('rte') && !lower.includes('deportes')) ||
     lower.includes('rté') ||
     lower.includes('virgin media') ||
     lower.includes('supersport') ||
@@ -247,7 +247,7 @@ const WorldCup = () => {
         name.includes('tsn') ||
         name.includes('ctv') ||
         (name.includes('sbs') && !name.includes('g1') && !name.includes('tbc') && !name.includes('knn') && !name.includes('kbc') && !name.includes('ubc') && !name.includes('jtv') && !name.includes('cjb') && !name.includes('jibs')) ||
-        name.includes('rte') ||
+        (name.includes('rte') && !name.includes('deportes')) ||
         name.includes('rté') ||
         name.includes('virgin media') ||
         name.includes('supersport') ||

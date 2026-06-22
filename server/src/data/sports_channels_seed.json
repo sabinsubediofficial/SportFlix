@@ -2736,33 +2736,6 @@
     "popularity": 100
   },
   {
-    "name": "BBC One (720p)",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/BBC_One_logo_2021.svg/960px-BBC_One_logo_2021.svg.png",
-    "groupTitle": "Sports",
-    "streamUrl": "http://92.114.85.72:8000/play/a0mp",
-    "tvgId": "BBC1.uk",
-    "status": "offline",
-    "popularity": 0
-  },
-  {
-    "name": "BBC Two HD (720p)",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/1/15/BBC_Two_logo_2021.svg/960px-BBC_Two_logo_2021.svg.png",
-    "groupTitle": "Sports",
-    "streamUrl": "https://streamer.nexyl.uk/69ef899e-8ca9-4537-9f1a-fe8b4216afbb.m3u8",
-    "tvgId": "BBC2.uk",
-    "status": "offline",
-    "popularity": 25
-  },
-  {
-    "name": "ITV1 (1080p)",
-    "logo": "https://i.imgur.com/xwPekCF.png",
-    "groupTitle": "Sports",
-    "streamUrl": "http://80.194.62.172:50002/stream/channelid/95929545",
-    "tvgId": "ITV1.uk",
-    "status": "offline",
-    "popularity": 0
-  },
-  {
     "name": "ITV (480p)",
     "logo": "https://i.imgur.com/YlDFir7.jpg",
     "groupTitle": "Sports",
@@ -2853,33 +2826,6 @@
     "popularity": 80
   },
   {
-    "name": "SBS One (Australia)",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6f/SBS_Australia_logo_2019.svg/1024px-SBS_Australia_logo_2019.svg.png",
-    "groupTitle": "Sports",
-    "streamUrl": "https://namdhari.tv/live/sbs1.m3u8",
-    "tvgId": "SBS1.au",
-    "status": "online",
-    "popularity": 75
-  },
-  {
-    "name": "TSN SPORTS FHD",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
-    "groupTitle": "Sports",
-    "streamUrl": "https://d3pnbvng3bx2nj.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-rds8g35qfqrnv/TSN_The_Ocho.m3u8",
-    "tvgId": "TSNSportsFHD.ca",
-    "status": "online",
-    "popularity": 90
-  },
-  {
-    "name": "TELEMUNDO FHD",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/2/29/Telemundo_logo.svg",
-    "groupTitle": "Sports",
-    "streamUrl": "https://nbcu-telemundoflorida-firetv.amagi.tv/playlist.m3u8",
-    "tvgId": "TelemundoFHD.us",
-    "status": "online",
-    "popularity": 90
-  },
-  {
     "name": "SporTV BR",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/f/f3/Logo_SporTV.png",
     "groupTitle": "Sports",
@@ -2896,24 +2842,6 @@
     "tvgId": "CazeTVFHD.br",
     "status": "online",
     "popularity": 85
-  },
-  {
-    "name": "TSN SPORTS",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
-    "groupTitle": "Sports",
-    "streamUrl": "https://59d8c0cee6f3d.streamlock.net/tsn/tsn_mobile/playlist.m3u8",
-    "tvgId": "TSNSports.ca",
-    "status": "online",
-    "popularity": 80
-  },
-  {
-    "name": "TSN SPORTS 3",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/5/52/TSN_Logo.svg",
-    "groupTitle": "Sports",
-    "streamUrl": "https://d3pnbvng3bx2nj.cloudfront.net/v1/master/3722c60a815c199d9c0ef36c5b73da68a62b09d1/cc-rds8g35qfqrnv/TSN_The_Ocho.m3u8",
-    "tvgId": "TSNSports3.ca",
-    "status": "online",
-    "popularity": 80
   },
   {
     "name": "BTV BDIX",
@@ -2965,69 +2893,6 @@
     "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
     "groupTitle": "World Cup 2026",
     "streamUrl": "https://nbcu-telemundowest-firetv.amagi.tv/playlist.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Noticias California",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://jmp2.uk/plu-65790feacbd0d60008fac87a.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Al Día",
-    "logo": "https://images.fubo.tv/channel-config-ui/station-logos/on-white/telemundo_al_dia_1000x1500_2x3_logo_300dpi_vertical_full_color_logo_xumo-3-copy.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://d1kq7q3vteqjb.cloudfront.net/master.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Accion",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://xumo-drct-ch835-ekq0p.fast.nbcuni.com/live/master.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Noticias Ahora",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://xumo-xumoent-ch827-uj0ch.fast.nbcuni.com/live/master.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Noticias Florida",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://amg00884-nbcuniversal-nbctelemundoflorida-xumo-atn0m.amagi.tv/playlist.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Noticias Noreste",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://amg00884-nbcuniversal-nbctelemundonortheast-xumo-ok3ha.amagi.tv/playlist.m3u8",
-    "tvgId": "",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo Romance",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/e/e5/Telemundo_logo.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://xumo-drct-ch836-57aiq.fast.nbcuni.com/live/master.m3u8",
     "tvgId": "",
     "status": "online",
     "popularity": 100
@@ -3105,29 +2970,11 @@
     "popularity": 100
   },
   {
-    "name": "Telemundo Al Dia",
-    "logo": "https://images.fubo.tv/channel-config-ui/station-logos/on-white/telemundo_al_dia_1000x1500_2x3_logo_300dpi_vertical_full_color_logo_xumo-3-copy.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://d1rqgw5gocwo9i.cloudfront.net/manifest/3fec3e5cac39a52b2132f9c66c83dae043dc17d4/prod_default_xumo-nbcu-stitched/10a44c37-f976-4d2b-ab23-8637a7a094ca/3.m3u8",
-    "tvgId": "TelemundoAlDia.us",
-    "status": "online",
-    "popularity": 100
-  },
-  {
     "name": "Telemundo Corpus Christi",
     "logo": "https://upload.wikimedia.org/wikipedia/commons/9/98/Telemundo_Corpus_Christi_logo.png",
     "groupTitle": "World Cup 2026",
     "streamUrl": "https://content.uplynk.com/channel/b6a96ed39d694ae1b738faa98cf7dd3f.m3u8",
     "tvgId": "TelemundoCorpusChristi.us",
-    "status": "online",
-    "popularity": 100
-  },
-  {
-    "name": "Telemundo telenovelas clásicas",
-    "logo": "https://i.imgur.com/9bPcYIN.png",
-    "groupTitle": "World Cup 2026",
-    "streamUrl": "https://jmp2.uk/plu-5cf96cc422df39f1a338d165.m3u8",
-    "tvgId": "TelemundoTelenovelasClasicas.us",
     "status": "online",
     "popularity": 100
   },
