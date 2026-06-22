@@ -42,59 +42,111 @@ export const recalculateAllPopularityScores = async () => {
 
 export const autoSeedChannels = async () => {
   try {
-    const channelCount = await prisma.channel.count();
-    
-    if (channelCount === 0) {
-      console.log('No channels found. Auto-seeding core World Cup & Sports channels...');
-      
-      let user = await prisma.user.findFirst();
-      if (!user) {
-        user = await prisma.user.create({
-          data: {
-            email: 'sports@webtv.local',
-            passwordHash: 'world-cup-2026',
-            role: 'admin'
-          }
-        });
-      }
+    let user = await prisma.user.findFirst();
+    if (!user) {
+      user = await prisma.user.create({
+        data: {
+          email: 'sports@webtv.local',
+          passwordHash: 'world-cup-2026',
+          role: 'admin'
+        }
+      });
+    }
 
-      const playlist = await prisma.playlist.create({
+    let playlist = await prisma.playlist.findFirst({
+      where: { url: 'static-seed' }
+    });
+
+    if (!playlist) {
+      playlist = await prisma.playlist.create({
         data: {
           name: 'World Cup & Global Sports (Core)',
           url: 'static-seed',
           userId: user.id
         }
       });
-
-      const seedChannels = loadSeedChannels();
-      if (seedChannels.length === 0) {
-        console.warn('Seed channels list is empty or could not be loaded.');
-        return;
-      }
-
-      const channelData = seedChannels.map(c => ({
-        name: c.name,
-        logo: c.logo,
-        groupTitle: c.groupTitle || 'Sports',
-        streamUrl: c.streamUrl,
-        tvgId: c.tvgId,
-        status: c.status || 'unknown',
-        popularity: c.popularity || 0,
-        playlistId: playlist.id
-      }));
-
-      // SQLite supports bulk inserts but createMany might have size limits in sqlite parameters.
-      // 316 channels with 8 columns = ~2500 variables, which is safe (SQLite limit is 32766 variables).
-      await prisma.channel.createMany({
-        data: channelData
-      });
-
-      console.log(`Successfully auto-seeded ${seedChannels.length} Sports channels.`);
-    } else {
-      // Recalculate popularity scores for existing channels to apply updated logic
-      await recalculateAllPopularityScores();
     }
+
+    const seedChannels = loadSeedChannels();
+    if (seedChannels.length === 0) {
+      console.warn('Seed channels list is empty or could not be loaded.');
+      return;
+    }
+
+    console.log(`Synchronizing database with sports_channels_seed.json (${seedChannels.length} channels)...`);
+
+    // Get all existing channels in this playlist
+    const dbChannels = await prisma.channel.findMany({
+      where: { playlistId: playlist.id }
+    });
+
+    const seedNames = seedChannels.map(c => c.name);
+
+    // Delete channels that are no longer in the seed file
+    let deletedCount = 0;
+    for (const dbCh of dbChannels) {
+      if (!seedNames.includes(dbCh.name)) {
+        await prisma.channel.delete({
+          where: { id: dbCh.id }
+        });
+        deletedCount++;
+      }
+    }
+    if (deletedCount > 0) {
+      console.log(`Deleted ${deletedCount} obsolete channels from database.`);
+    }
+
+    // Upsert channels from seed file
+    let addedCount = 0;
+    let updatedCount = 0;
+    for (const ch of seedChannels) {
+      const exists = dbChannels.find(dbCh => dbCh.name === ch.name);
+      if (exists) {
+        // Update if properties changed
+        if (
+          exists.streamUrl !== ch.streamUrl ||
+          exists.logo !== ch.logo ||
+          exists.groupTitle !== ch.groupTitle ||
+          exists.status !== ch.status ||
+          exists.popularity !== ch.popularity ||
+          exists.tvgId !== ch.tvgId
+        ) {
+          await prisma.channel.update({
+            where: { id: exists.id },
+            data: {
+              logo: ch.logo,
+              streamUrl: ch.streamUrl,
+              tvgId: ch.tvgId,
+              groupTitle: ch.groupTitle || 'Sports',
+              status: ch.status || 'unknown',
+              popularity: ch.popularity || 0
+            }
+          });
+          updatedCount++;
+        }
+      } else {
+        // Insert new
+        await prisma.channel.create({
+          data: {
+            name: ch.name,
+            logo: ch.logo,
+            groupTitle: ch.groupTitle || 'Sports',
+            streamUrl: ch.streamUrl,
+            tvgId: ch.tvgId,
+            status: ch.status || 'unknown',
+            popularity: ch.popularity || 0,
+            playlistId: playlist.id
+          }
+        });
+        addedCount++;
+      }
+    }
+
+    console.log(`Database sync complete. Added: ${addedCount}, Updated: ${updatedCount}.`);
+    
+    // Recalculate popularity scores
+    await recalculateAllPopularityScores();
   } catch (error) {
-    console.error('Auto-seeding failed:', error);
+    console.error('Auto-seeding sync failed:', error);
   }
 };

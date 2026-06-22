@@ -98,25 +98,28 @@ async function main() {
   }
 
   console.log('\n--- Match Verification Results ---');
-  const grouped = {};
+  const grouped: Record<string, any[]> = {};
   for (const item of verified) {
-    if (!grouped[item.target]) grouped[item.target] = [];
-    grouped[item.target].push(item);
+    const target = item.target;
+    if (!grouped[target]) {
+      grouped[target] = [];
+    }
+    grouped[target].push(item);
   }
 
   for (const target of targets) {
     const list = grouped[target] || [];
     console.log(`\n=== Target: ${target.toUpperCase()} (${list.length} unique matches) ===`);
-    const online = list.filter(it => it.status === 'online');
-    const offline = list.filter(it => it.status === 'offline');
+    const online = list.filter((it: any) => it.status === 'online');
+    const offline = list.filter((it: any) => it.status === 'offline');
     
     console.log(`  🟢 Online (${online.length}):`);
-    online.forEach(it => {
+    online.forEach((it: any) => {
       console.log(`    - Name: "${it.name}" | URL: ${it.url}`);
     });
     
     console.log(`  🔴 Offline (${offline.length}):`);
-    offline.slice(0, 5).forEach(it => {
+    offline.slice(0, 5).forEach((it: any) => {
       console.log(`    - Name: "${it.name}" | URL: ${it.url}`);
     });
     if (offline.length > 5) {
