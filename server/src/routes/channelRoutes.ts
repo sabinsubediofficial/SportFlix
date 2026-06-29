@@ -232,6 +232,24 @@ router.post('/import', async (req, res) => {
   }
 });
 
+// Fetch live matches and schedules directly from ntvs.cx
+router.get('/live-matches', async (req, res) => {
+  try {
+    const response = await axios.get('https://www.ntvs.cx/api/get-matches?server=kobra&type=both', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'application/json'
+      },
+      timeout: 10000
+    });
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.json(response.data);
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: 'Failed to fetch match list from server', details: error.message });
+  }
+});
+
 // Extract player iframe embed URL from a live match watch page (e.g. ntvs.cx)
 router.get('/extract-embed', async (req, res) => {
   const { url } = req.query;

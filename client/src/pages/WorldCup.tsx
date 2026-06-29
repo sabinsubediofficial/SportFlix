@@ -1,201 +1,90 @@
-import { useMemo, useState } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
-import { fetchChannels } from '../services/api';
 import { usePlayer } from '../context/PlayerContext';
-import { Trophy, Calendar, Play } from 'lucide-react';
+import { Trophy, Calendar, Play, Tv } from 'lucide-react';
 
-interface Match {
+interface RemoteMatch {
   id: string;
-  homeTeam: string;
-  awayTeam: string;
-  homeFlag: string;
-  awayFlag: string;
-  group: string;
-  stadium: string;
-  utcDateTime: string;
-  broadcasters: { name: string; searchKey: string }[];
+  title: string;
+  category: string;
+  date: number; // timestamp in ms
+  popular?: boolean;
+  teams: {
+    home: { name: string; badge: string };
+    away: { name: string; badge: string };
+  };
+  sources: { source: string; id: string }[];
+  live: boolean;
 }
 
-const matches: Match[] = [
-  {
-    id: 'm1',
-    homeTeam: 'Mexico',
-    awayTeam: 'South Africa',
-    homeFlag: '🇲🇽',
-    awayFlag: '🇿🇦',
-    group: 'Group A',
-    stadium: 'Estadio Azteca, Mexico City',
-    utcDateTime: '2026-06-11T15:00:00Z',
-    broadcasters: [
-      { name: 'Fox Deportes', searchKey: 'fox deportes' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TRT 1', searchKey: 'trt 1' },
-      { name: 'TVRI Sport', searchKey: 'tvri sport' }
-    ]
-  },
-  {
-    id: 'm2',
-    homeTeam: 'Korea Republic',
-    awayTeam: 'Czechia',
-    homeFlag: '🇰🇷',
-    awayFlag: '🇨🇿',
-    group: 'Group A',
-    stadium: 'Estadio Guadalajara, Guadalajara',
-    utcDateTime: '2026-06-11T18:00:00Z',
-    broadcasters: [
-      { name: 'Fox Deportes', searchKey: 'fox deportes' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TVRI', searchKey: 'tvri' }
-    ]
-  },
-  {
-    id: 'm3',
-    homeTeam: 'Canada',
-    awayTeam: 'Bosnia & Herzegovina',
-    homeFlag: '🇨🇦',
-    awayFlag: '🇧🇦',
-    group: 'Group B',
-    stadium: 'Toronto Stadium, Toronto',
-    utcDateTime: '2026-06-12T16:00:00Z',
-    broadcasters: [
-      { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'Thai PBS', searchKey: 'thai pbs' }
-    ]
-  },
-  {
-    id: 'm4',
-    homeTeam: 'USA',
-    awayTeam: 'Paraguay',
-    homeFlag: '🇺🇸',
-    awayFlag: '🇵🇾',
-    group: 'Group D',
-    stadium: 'Los Angeles Stadium, Los Angeles',
-    utcDateTime: '2026-06-12T19:00:00Z',
-    broadcasters: [
-      { name: 'Fox Deportes', searchKey: 'fox deportes' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TVRI Sport', searchKey: 'tvri sport' }
-    ]
-  },
-  {
-    id: 'm5',
-    homeTeam: 'Qatar',
-    awayTeam: 'Switzerland',
-    homeFlag: '🇶🇦',
-    awayFlag: '🇨🇭',
-    group: 'Group B',
-    stadium: 'San Francisco Bay Area Stadium',
-    utcDateTime: '2026-06-13T14:00:00Z',
-    broadcasters: [
-      { name: 'ITV Deportes', searchKey: 'itv deportes' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TRT 1', searchKey: 'trt 1' },
-      { name: 'TVRI', searchKey: 'tvri' }
-    ]
-  },
-  {
-    id: 'm6',
-    homeTeam: 'Brazil',
-    awayTeam: 'Morocco',
-    homeFlag: '🇧🇷',
-    awayFlag: '🇲🇦',
-    group: 'Group C',
-    stadium: 'MetLife Stadium, New York/NJ',
-    utcDateTime: '2026-06-13T17:00:00Z',
-    broadcasters: [
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TRT 1', searchKey: 'trt 1' },
-      { name: 'TVRI Sport', searchKey: 'tvri sport' }
-    ]
-  },
-  {
-    id: 'm7',
-    homeTeam: 'Haiti',
-    awayTeam: 'Scotland',
-    homeFlag: '🇭🇹',
-    awayFlag: '🏴󠁧󠁢󠁳󠁣󠁴󠁿',
-    group: 'Group C',
-    stadium: 'Gillette Stadium, Boston',
-    utcDateTime: '2026-06-13T20:00:00Z',
-    broadcasters: [
-      { name: 'ITV Deportes', searchKey: 'itv deportes' },
-      { name: 'TSN The Ocho', searchKey: 'tsn the ocho' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TVRI', searchKey: 'tvri' }
-    ]
-  },
-  {
-    id: 'm8',
-    homeTeam: 'Australia',
-    awayTeam: 'Türkiye',
-    homeFlag: '🇦🇺',
-    awayFlag: '🇹🇷',
-    group: 'Group D',
-    stadium: 'BC Place, Vancouver',
-    utcDateTime: '2026-06-13T23:00:00Z',
-    broadcasters: [
-      { name: 'TRT 1', searchKey: 'trt 1' },
-      { name: 'CazeTV', searchKey: 'cazetv' },
-      { name: 'TVRI Sport', searchKey: 'tvri sport' }
-    ]
-  }
-];
-
-const getLocalDateString = (utcDateTime: string) => {
-  const dateObj = new Date(utcDateTime);
+const getLocalDateString = (timestampMs: number) => {
+  const dateObj = new Date(timestampMs);
   return dateObj.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
 };
 
-const getLocalTimeString = (utcDateTime: string) => {
-  const dateObj = new Date(utcDateTime);
+const getLocalTimeString = (timestampMs: number) => {
+  const dateObj = new Date(timestampMs);
   return dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 };
 
 const getTabLabel = (dateStr: string) => {
-  const dateObj = new Date(dateStr + ', 2026');
+  const dateObj = new Date(dateStr + ', ' + new Date().getFullYear());
   const dayName = dateObj.toLocaleDateString('en-US', { weekday: 'short' });
   return `${dayName} - ${dateStr}`;
 };
 
-const dateTabs = Array.from(new Set(matches.map(m => getLocalDateString(m.utcDateTime)))).sort((a, b) => {
-  return new Date(a + ', 2026').getTime() - new Date(b + ', 2026').getTime();
-});
-
 const WorldCup = () => {
   const { openPlayer } = usePlayer();
-  const [selectedDate, setSelectedDate] = useState<string>(dateTabs[0] || 'June 11');
-
-  // Fetch general channel registry
-  const { data: channels = [], isLoading } = useQuery({
-    queryKey: ['channels'],
-    queryFn: () => fetchChannels(),
-    refetchInterval: 60000,
+  const [selectedDate, setSelectedDate] = useState<string>(() => {
+    // Return empty string initial state
+    return '';
   });
 
-  const filteredMatches = useMemo(() => {
-    return matches.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
-  }, [selectedDate]);
+  // Fetch live matches directly from our proxy endpoint
+  const { data, isLoading } = useQuery({
+    queryKey: ['liveMatches'],
+    queryFn: async (): Promise<{ success: boolean; all: RemoteMatch[]; live: RemoteMatch[] }> => {
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const res = await fetch(`${apiBase}/channels/live-matches`);
+      if (!res.ok) throw new Error('Failed to fetch live matches');
+      return res.json();
+    },
+    refetchInterval: 30000, // refresh every 30 seconds
+  });
 
-  // Handler to stream a channel matching the broadcaster searchKey
-  const handleWatchChannel = (searchKey: string) => {
-    const targetChannel = channels.find(c => c.name.toLowerCase().includes(searchKey.toLowerCase()));
-    if (targetChannel) {
-      openPlayer(targetChannel);
-    } else {
-      // Create a fallback channel pointing to the resolved live match URL directly
-      const fallbackChannel = {
-        id: 'fallback-' + searchKey,
-        name: searchKey.toUpperCase() + ' (Auto-Resolved)',
-        streamUrl: 'https://www.ntvs.cx/watch/kobra/brazil-vs-japan-2499835',
-        groupTitle: 'World Cup 2026'
-      };
-      openPlayer(fallbackChannel);
+  const allMatches = useMemo(() => {
+    if (!data || !data.all) return [];
+    return data.all;
+  }, [data]);
+
+  const dateTabs = useMemo(() => {
+    const dates = allMatches.map(m => getLocalDateString(m.date));
+    return Array.from(new Set(dates)).sort((a, b) => {
+      const year = new Date().getFullYear();
+      return new Date(`${a}, ${year}`).getTime() - new Date(`${b}, ${year}`).getTime();
+    });
+  }, [allMatches]);
+
+  // Auto-select first date tab when loaded
+  useEffect(() => {
+    if (dateTabs.length > 0 && !selectedDate) {
+      setSelectedDate(dateTabs[0]);
     }
-  };
+  }, [dateTabs, selectedDate]);
 
-  const isChannelOnline = (_searchKey: string): boolean => {
-    return true; // Always online for immediate quick play!
+  const filteredMatches = useMemo(() => {
+    return allMatches.filter(match => getLocalDateString(match.date) === selectedDate);
+  }, [allMatches, selectedDate]);
+
+  const handleWatchMatch = (matchId: string, matchTitle: string) => {
+    // Generate the player payload pointing to the resolved kobra watch page URL
+    const targetChannel = {
+      id: matchId,
+      name: matchTitle,
+      streamUrl: `https://www.ntvs.cx/watch/kobra/${matchId}`,
+      groupTitle: 'Live Matches'
+    };
+    openPlayer(targetChannel);
   };
 
   if (isLoading) return (
@@ -203,7 +92,7 @@ const WorldCup = () => {
       <div className="relative">
         <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
         <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
-        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading Cup Schedules</div>
+        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading Live Schedules</div>
       </div>
     </div>
   );
@@ -212,7 +101,6 @@ const WorldCup = () => {
     <div className="min-h-screen bg-[#050505] pb-24">
       {/* World Cup Hero Banner */}
       <div className="relative h-[320px] w-full overflow-hidden flex items-end p-6 md:p-12 lg:p-16">
-        {/* Background Image with Dark Golden Gradient */}
         <div 
           className="absolute inset-0 bg-cover bg-center transition-transform duration-[3000ms] scale-105"
           style={{ 
@@ -251,81 +139,101 @@ const WorldCup = () => {
             </div>
 
             {/* Date Tabs */}
-            <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit">
-              {dateTabs.map((date) => (
-                <button
-                  key={date}
-                  onClick={() => setSelectedDate(date)}
-                  className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all ${
-                    selectedDate === date 
-                      ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
-                  }`}
+            {dateTabs.length > 0 && (
+              <div className="flex bg-white/5 p-1 rounded-2xl border border-white/10 w-fit overflow-x-auto max-w-full scrollbar-hide">
+                {dateTabs.map((date) => (
+                  <button
+                    key={date}
+                    onClick={() => setSelectedDate(date)}
+                    className={`px-5 py-2.5 rounded-xl font-bold text-sm transition-all whitespace-nowrap ${
+                      selectedDate === date 
+                        ? 'bg-blue-600 text-white shadow-lg shadow-blue-500/20' 
+                        : 'text-white/60 hover:text-white hover:bg-white/5'
+                    }`}
+                  >
+                    {getTabLabel(date)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {filteredMatches.length === 0 ? (
+            <div className="flex items-center gap-3 p-8 bg-white/5 border border-white/5 rounded-2xl text-white/40">
+              <Tv className="w-6 h-6 text-blue-500" />
+              <p className="font-bold text-sm">No matches are scheduled for this day.</p>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+              {filteredMatches.map((match) => (
+                <div 
+                  key={match.id} 
+                  className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 group shadow-lg relative overflow-hidden"
                 >
-                  {getTabLabel(date)}
-                </button>
+                  <div>
+                    <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
+                      <span className="flex items-center gap-1">
+                        <span className="w-1.5 h-1.5 rounded-full bg-blue-500" />
+                        {match.category}
+                      </span>
+                      <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">
+                        {getLocalTimeString(match.date)}
+                      </span>
+                    </div>
+
+                    {/* Teams Display */}
+                    <div className="flex items-center justify-center space-x-4 mb-4">
+                      <div className="flex items-center space-x-3 flex-1 justify-end">
+                        <span className="text-xs font-bold text-white truncate max-w-[80px] text-right">
+                          {match.teams.home.name}
+                        </span>
+                        {match.teams.home.badge && (
+                          <img 
+                            src={match.teams.home.badge.startsWith('http') ? match.teams.home.badge : `https://www.ntvs.cx${match.teams.home.badge}`} 
+                            alt={match.teams.home.name} 
+                            className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md"
+                          />
+                        )}
+                      </div>
+                      
+                      <span className="text-white/20 font-black text-[10px] italic uppercase tracking-wider shrink-0">VS</span>
+                      
+                      <div className="flex items-center space-x-3 flex-1 justify-start">
+                        {match.teams.away.badge && (
+                          <img 
+                            src={match.teams.away.badge.startsWith('http') ? match.teams.away.badge : `https://www.ntvs.cx${match.teams.away.badge}`} 
+                            alt={match.teams.away.name} 
+                            className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md"
+                          />
+                        )}
+                        <span className="text-xs font-bold text-white truncate max-w-[80px] text-left">
+                          {match.teams.away.name}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Play Button */}
+                  <div className="border-t border-white/5 pt-4 mt-2">
+                    <button
+                      onClick={() => handleWatchMatch(match.id, match.title)}
+                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border ${
+                        match.live
+                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5'
+                          : 'bg-blue-600/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white'
+                      }`}
+                    >
+                      <Play size={12} className="fill-current" />
+                      <span>{match.live ? 'WATCH LIVE NOW' : 'WATCH PLAYBACK'}</span>
+                      {match.live && (
+                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                      )}
+                    </button>
+                  </div>
+                </div>
               ))}
             </div>
-          </div>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {filteredMatches.map((match) => (
-              <div 
-                key={match.id} 
-                className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 group shadow-lg"
-              >
-                <div>
-                  <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
-                    <span>{match.group}</span>
-                    <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">{getLocalTimeString(match.utcDateTime)}</span>
-                  </div>
-
-                  {/* Teams Display */}
-                  <div className="flex items-center justify-center space-x-4 mb-4">
-                    <div className="flex items-center space-x-2 flex-1 justify-end">
-                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.homeTeam}</span>
-                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.homeFlag}</span>
-                    </div>
-                    
-                    <span className="text-white/20 font-black text-xs italic uppercase tracking-wider shrink-0">VS</span>
-                    
-                    <div className="flex items-center space-x-2 flex-1 justify-start">
-                      <span className="text-2xl filter drop-shadow-md shrink-0">{match.awayFlag}</span>
-                      <span className="text-sm font-bold text-white truncate max-w-[100px]">{match.awayTeam}</span>
-                    </div>
-                  </div>
-
-                  <p className="text-center text-[10px] text-white/30 font-medium mb-4 truncate">
-                    📍 {match.stadium}
-                  </p>
-                </div>
-
-                {/* Broadcaster Quick Play Buttons */}
-                <div className="border-t border-white/5 pt-4">
-                  <div className="flex flex-wrap gap-2">
-                    {match.broadcasters.map((b) => {
-                      const online = isChannelOnline(b.searchKey);
-                      return (
-                        <button
-                          key={b.name}
-                          onClick={() => handleWatchChannel(b.searchKey)}
-                          className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-[10px] font-bold transition-all border ${
-                            online 
-                              ? 'bg-blue-500/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white cursor-pointer' 
-                              : 'bg-white/5 text-white/30 border-white/5 hover:bg-red-500/10 hover:text-red-400 hover:border-red-500/20'
-                          }`}
-                        >
-                          <Play size={8} className="fill-current" />
-                          <span>{b.name}</span>
-                          <span className={`w-1 h-1 rounded-full ${online ? 'bg-emerald-500' : 'bg-rose-500'}`} />
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
+          )}
         </section>
       </div>
     </div>
