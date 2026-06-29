@@ -371,10 +371,10 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
       )}
 
       {/* Overlay UI */}
-      <div className={`absolute inset-0 z-30 flex flex-col justify-between transition-opacity duration-500 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'} ${error ? 'pointer-events-none' : ''}`}>
+      <div className={`absolute inset-0 z-30 flex flex-col justify-between transition-opacity duration-500 ${showControls || !isPlaying ? 'opacity-100' : 'opacity-0'} ${error ? 'pointer-events-none' : ''} ${isEmbed ? 'pointer-events-none' : ''}`}>
         {/* Top Bar - Channel Info & Back Button */}
-        <div className="p-8 bg-gradient-to-b from-black/80 to-transparent flex justify-between items-start">
-          <div className="flex items-start space-x-6">
+        <div className="p-8 bg-gradient-to-b from-black/80 to-transparent flex justify-between items-start pointer-events-none">
+          <div className="flex items-start space-x-6 pointer-events-auto">
             {onBack && (
               <button 
                 onClick={(e) => {
