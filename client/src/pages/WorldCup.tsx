@@ -41,12 +41,12 @@ const WorldCup = () => {
   });
 
   // Fetch live matches directly from our proxy endpoint
-  const { data, isLoading } = useQuery({
+  const { data, isLoading, error } = useQuery({
     queryKey: ['liveMatches'],
     queryFn: async (): Promise<{ success: boolean; all: RemoteMatch[]; live: RemoteMatch[] }> => {
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiBase}/channels/live-matches`);
-      if (!res.ok) throw new Error('Failed to fetch live matches');
+      if (!res.ok) throw new Error(`Server returned status ${res.status}`);
       return res.json();
     },
     refetchInterval: 30000, // refresh every 30 seconds
@@ -93,6 +93,23 @@ const WorldCup = () => {
         <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
         <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
         <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading Live Schedules</div>
+      </div>
+    </div>
+  );
+
+  if (error) return (
+    <div className="flex flex-col items-center justify-center h-screen bg-[#050505] p-6 text-center">
+      <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mb-4">
+        <Trophy className="w-8 h-8 text-red-500" />
+      </div>
+      <h3 className="text-xl font-bold text-white mb-2">API Connection Failed</h3>
+      <p className="text-white/60 max-w-md mb-6 text-sm">
+        Could not load live schedules. Your Vercel environment variable <code>VITE_API_URL</code> might be missing or your backend server is offline.
+      </p>
+      <div className="bg-white/5 border border-white/5 p-4 rounded-xl text-left max-w-md w-full font-mono text-[10px] text-white/40 break-all">
+        Attempted endpoint: {import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/channels/live-matches
+        <br />
+        Error: {(error as any).message}
       </div>
     </div>
   );
