@@ -59,6 +59,41 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
   const [subtitlesEnabled, setSubtitlesEnabled] = useState(false); // Disabled by default
   const controlsTimeoutRef = useRef<any>(null);
 
+  const [resolvedUrl, setResolvedUrl] = useState<string>('');
+  const [isResolving, setIsResolving] = useState<boolean>(false);
+
+  const isWatchPage = url && (url.includes('ntvs.cx/watch') || url.includes('ntv.cx/watch'));
+
+  useEffect(() => {
+    if (!isWatchPage) {
+      setResolvedUrl('');
+      setIsResolving(false);
+      return;
+    }
+
+    const resolveEmbed = async () => {
+      setIsResolving(true);
+      setError(null);
+      try {
+        const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+        const response = await fetch(`${apiBase}/channels/extract-embed?url=${encodeURIComponent(url)}`);
+        if (!response.ok) throw new Error('Failed to resolve match player link.');
+        const data = await response.json();
+        if (data.success && data.embedUrl) {
+          setResolvedUrl(data.embedUrl);
+        } else {
+          throw new Error(data.error || 'Embed player not found.');
+        }
+      } catch (err: any) {
+        setError(err.message || 'Failed to connect to the match watch server.');
+      } finally {
+        setIsResolving(false);
+      }
+    };
+
+    resolveEmbed();
+  }, [url, isWatchPage]);
+
   const applySubtitlesState = useCallback((enabled: boolean) => {
     if (videoRef.current) {
       const tracks = videoRef.current.textTracks;
@@ -153,9 +188,12 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
     setUseProxy(false);
   }, [url]);
 
+  const displayUrl = isWatchPage ? resolvedUrl : url;
+  const isEmbed = displayUrl && (displayUrl.includes('/embed') || displayUrl.includes('iframe') || !displayUrl.includes('.m3u8'));
+
   useEffect(() => {
     const video = videoRef.current;
-    if (!video || !url) return;
+    if (!video || !displayUrl || isEmbed || isResolving) return;
 
     let hls: Hls | null = null;
     setError(null);
@@ -163,8 +201,8 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
 
     const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     const streamUrl = useProxy 
-      ? `${apiBase}/channels/stream-proxy?url=${encodeURIComponent(url)}` 
-      : url;
+      ? `${apiBase}/channels/stream-proxy?url=${encodeURIComponent(displayUrl)}` 
+      : displayUrl;
 
     const setupHls = () => {
       if (Hls.isSupported()) {
@@ -275,15 +313,25 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
       onMouseMove={handleMouseMove}
       className="group relative w-full h-full bg-black flex items-center justify-center overflow-hidden"
     >
-      <video
-        ref={videoRef}
-        className="w-full h-full object-contain"
-        onClick={togglePlay}
-        playsInline
-      />
+      {isEmbed ? (
+        <iframe
+          src={displayUrl}
+          className="w-full h-full border-0"
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          allowFullScreen
+          scrolling="no"
+        />
+      ) : (
+        <video
+          ref={videoRef}
+          className="w-full h-full object-contain"
+          onClick={togglePlay}
+          playsInline
+        />
+      )}
 
       {/* Buffering State */}
-      {isBuffering && !error && (
+      {(isBuffering || isResolving) && !error && (!displayUrl || !isEmbed) && (
         <div className="absolute inset-0 flex items-center justify-center bg-black/20 backdrop-blur-[2px] z-10">
           <Loader2 className="w-16 h-16 text-blue-500 animate-spin" />
         </div>
@@ -358,61 +406,63 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
         </div>
 
         {/* Bottom Bar - Controls */}
-        <div className="p-8 bg-gradient-to-t from-black/80 to-transparent flex flex-col space-y-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-6">
-              {/* Play/Pause */}
-              <button 
-                onClick={togglePlay}
-                className="text-white hover:text-blue-400 transition-colors transform active:scale-90"
-              >
-                {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current" />}
-              </button>
-
-              {/* Volume */}
-              <div className="flex items-center space-x-3 group/volume">
-                <button onClick={toggleMute} className="text-white hover:text-blue-400 transition-colors">
-                  {isMuted || volume === 0 ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+        {!isEmbed && (
+          <div className="p-8 bg-gradient-to-t from-black/80 to-transparent flex flex-col space-y-4">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-6">
+                {/* Play/Pause */}
+                <button 
+                  onClick={togglePlay}
+                  className="text-white hover:text-blue-400 transition-colors transform active:scale-90"
+                >
+                  {isPlaying ? <Pause className="w-8 h-8 fill-current" /> : <Play className="w-8 h-8 fill-current" />}
                 </button>
-                <input
-                  type="range"
-                  min="0"
-                  max="1"
-                  step="0.05"
-                  value={isMuted ? 0 : volume}
-                  onChange={handleVolumeChange}
-                  className="w-24 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-blue-500 group-hover/volume:w-32 transition-all"
-                />
+
+                {/* Volume */}
+                <div className="flex items-center space-x-3 group/volume">
+                  <button onClick={toggleMute} className="text-white hover:text-blue-400 transition-colors">
+                    {isMuted || volume === 0 ? <VolumeX className="w-6 h-6" /> : <Volume2 className="w-6 h-6" />}
+                  </button>
+                  <input
+                    type="range"
+                    min="0"
+                    max="1"
+                    step="0.05"
+                    value={isMuted ? 0 : volume}
+                    onChange={handleVolumeChange}
+                    className="w-24 h-1 bg-white/20 rounded-lg appearance-none cursor-pointer accent-blue-500 group-hover/volume:w-32 transition-all"
+                  />
+                </div>
+              </div>
+
+              <div className="flex items-center space-x-6">
+                {/* Subtitles CC Toggle */}
+                <button 
+                  onClick={() => setSubtitlesEnabled(prev => !prev)} 
+                  className={`transition-colors relative flex items-center justify-center cursor-pointer ${subtitlesEnabled ? 'text-blue-500 hover:text-blue-400' : 'text-white/80 hover:text-white'}`}
+                  title={subtitlesEnabled ? "Disable Subtitles" : "Enable Subtitles"}
+                >
+                  <Subtitles className="w-6 h-6" />
+                  {!subtitlesEnabled && (
+                    <div className="absolute w-[26px] h-[2px] bg-red-500/80 rotate-45 rounded-full" />
+                  )}
+                </button>
+
+                {/* Picture-in-Picture */}
+                {document.pictureInPictureEnabled && (
+                  <button onClick={togglePiP} className="text-white hover:text-blue-400 transition-colors">
+                    <ExternalLink className="w-6 h-6" />
+                  </button>
+                )}
+
+                {/* Fullscreen */}
+                <button onClick={toggleFullscreen} className="text-white hover:text-blue-400 transition-colors">
+                  {isFullscreen ? <Minimize className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
+                </button>
               </div>
             </div>
-
-            <div className="flex items-center space-x-6">
-              {/* Subtitles CC Toggle */}
-              <button 
-                onClick={() => setSubtitlesEnabled(prev => !prev)} 
-                className={`transition-colors relative flex items-center justify-center cursor-pointer ${subtitlesEnabled ? 'text-blue-500 hover:text-blue-400' : 'text-white/80 hover:text-white'}`}
-                title={subtitlesEnabled ? "Disable Subtitles" : "Enable Subtitles"}
-              >
-                <Subtitles className="w-6 h-6" />
-                {!subtitlesEnabled && (
-                  <div className="absolute w-[26px] h-[2px] bg-red-500/80 rotate-45 rounded-full" />
-                )}
-              </button>
-
-              {/* Picture-in-Picture */}
-              {document.pictureInPictureEnabled && (
-                <button onClick={togglePiP} className="text-white hover:text-blue-400 transition-colors">
-                  <ExternalLink className="w-6 h-6" />
-                </button>
-              )}
-
-              {/* Fullscreen */}
-              <button onClick={toggleFullscreen} className="text-white hover:text-blue-400 transition-colors">
-                {isFullscreen ? <Minimize className="w-6 h-6" /> : <Maximize className="w-6 h-6" />}
-              </button>
-            </div>
           </div>
-        </div>
+        )}
       </div>
 
       <style>{`

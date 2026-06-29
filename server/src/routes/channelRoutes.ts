@@ -232,4 +232,43 @@ router.post('/import', async (req, res) => {
   }
 });
 
+// Extract player iframe embed URL from a live match watch page (e.g. ntvs.cx)
+router.get('/extract-embed', async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    res.status(400).json({ error: 'Missing url parameter' });
+    return;
+  }
+
+  const targetUrl = String(url);
+  try {
+    const response = await axios.get(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        'Accept': 'text/html'
+      },
+      timeout: 10000
+    });
+
+    const html = response.data;
+    // Extract stream player iframe src
+    const iframeMatch = html.match(/<iframe[^>]*id="streamPlayer"[^>]*src="([^"]+)"/i) || 
+                        html.match(/src="(\/embed\?t=[^"]+)"/i);
+    
+    if (iframeMatch) {
+      let embedUrl = iframeMatch[1];
+      if (embedUrl.startsWith('/')) {
+        const parsedUrl = new URL(targetUrl);
+        embedUrl = `${parsedUrl.protocol}//${parsedUrl.host}${embedUrl}`;
+      }
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.json({ success: true, embedUrl });
+    } else {
+      res.status(404).json({ success: false, error: 'Stream player iframe not found in the page.' });
+    }
+  } catch (error: any) {
+    res.status(500).json({ success: false, error: 'Failed to fetch match page', details: error.message });
+  }
+});
+
 export default router;
