@@ -238,9 +238,13 @@ router.get('/live-matches', async (req, res) => {
     const response = await axios.get('https://www.ntvs.cx/api/get-matches?server=kobra&type=both', {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'application/json'
+        'Accept': 'application/json, text/plain, */*',
+        'Accept-Language': 'en-US,en;q=0.9',
+        'Cache-Control': 'no-cache',
+        'Pragma': 'no-cache',
+        'Referer': 'https://www.ntvs.cx/'
       },
-      timeout: 10000
+      timeout: 20000
     });
 
     res.setHeader('Access-Control-Allow-Origin', '*');
