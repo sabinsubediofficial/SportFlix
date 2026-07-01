@@ -21,6 +21,7 @@ interface VideoPlayerProps {
   groupTitle?: string;
   onBack?: () => void;
   onPiPChange?: (isPiP: boolean) => void;
+  streams?: { id: string; channel_name: string; url: string }[];
 }
 
 const VideoPlayer: React.FC<VideoPlayerProps> = (props) => {
@@ -44,7 +45,8 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
   groupTitle,
   onBack,
   onPiPChange,
-  onRetry
+  onRetry,
+  streams
 }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -59,10 +61,20 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
   const [subtitlesEnabled, setSubtitlesEnabled] = useState(false); // Disabled by default
   const controlsTimeoutRef = useRef<any>(null);
 
+  const [currentUrl, setCurrentUrl] = useState(url);
+  const [activeStreamId, setActiveStreamId] = useState('');
   const [resolvedUrl, setResolvedUrl] = useState<string>('');
   const [isResolving, setIsResolving] = useState<boolean>(false);
 
-  const isWatchPage = url && (url.includes('ntvs.cx/watch') || url.includes('ntv.cx/watch'));
+  // Synchronize state when URL or streams props update
+  useEffect(() => {
+    setCurrentUrl(url);
+    if (streams && streams.length > 0) {
+      setActiveStreamId(streams[0].id);
+    }
+  }, [url, streams]);
+
+  const isWatchPage = currentUrl && (currentUrl.includes('ntvs.cx/watch') || currentUrl.includes('ntv.cx/watch'));
 
   useEffect(() => {
     if (!isWatchPage) {
@@ -76,7 +88,7 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
       setError(null);
       try {
         const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-        const response = await fetch(`${apiBase}/channels/extract-embed?url=${encodeURIComponent(url)}`);
+        const response = await fetch(`${apiBase}/channels/extract-embed?url=${encodeURIComponent(currentUrl)}`);
         if (!response.ok) throw new Error('Failed to resolve match player link.');
         const data = await response.json();
         if (data.success && data.embedUrl) {
@@ -92,7 +104,7 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
     };
 
     resolveEmbed();
-  }, [url, isWatchPage]);
+  }, [currentUrl, isWatchPage]);
 
   const applySubtitlesState = useCallback((enabled: boolean) => {
     if (videoRef.current) {
@@ -186,9 +198,9 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
 
   useEffect(() => {
     setUseProxy(false);
-  }, [url]);
+  }, [currentUrl]);
 
-  const displayUrl = isWatchPage ? resolvedUrl : url;
+  const displayUrl = isWatchPage ? resolvedUrl : currentUrl;
   const isEmbed = displayUrl && (displayUrl.includes('/embed') || displayUrl.includes('iframe') || !displayUrl.includes('.m3u8'));
 
   useEffect(() => {
@@ -305,7 +317,19 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
       document.removeEventListener('fullscreenchange', onFullscreenChange);
       if (controlsTimeoutRef.current) clearTimeout(controlsTimeoutRef.current);
     };
-  }, [url, autoPlay, onPiPChange, useProxy]);
+  }, [currentUrl, autoPlay, onPiPChange, useProxy]);
+
+  const handleStreamChange = (streamId: string) => {
+    const selected = streams?.find(s => s.id === streamId);
+    if (selected) {
+      setActiveStreamId(streamId);
+      const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const playUrl = selected.url.includes('.m3u8')
+        ? selected.url
+        : `${apiBase}/channels/player-proxy?url=${encodeURIComponent(selected.url)}`;
+      setCurrentUrl(playUrl);
+    }
+  };
 
   return (
     <div 
@@ -403,6 +427,24 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
               )}
             </div>
           </div>
+
+          {/* Alternative Streams Selector */}
+          {streams && streams.length > 1 && (
+            <div className="pointer-events-auto flex items-center gap-3">
+              <label className="text-[10px] font-black text-white/40 uppercase tracking-widest hidden md:inline-block">Select Stream</label>
+              <select
+                value={activeStreamId}
+                onChange={(e) => handleStreamChange(e.target.value)}
+                className="bg-black/60 border border-white/10 hover:border-white/20 rounded-xl px-4 py-2.5 text-xs font-black text-white focus:outline-none focus:border-blue-500/50 cursor-pointer backdrop-blur-md transition-all shadow-lg"
+              >
+                {streams.map((s, idx) => (
+                  <option key={s.id} value={s.id} className="bg-[#050505] text-white">
+                    {`Stream ${idx + 1}: ${s.channel_name}`}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
 
         {/* Bottom Bar - Controls */}

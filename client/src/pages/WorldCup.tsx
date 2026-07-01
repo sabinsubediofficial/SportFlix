@@ -164,10 +164,15 @@ const getLocalTimeString = (utcDateTimeStr: string) => {
   return dateObj.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', hour12: true });
 };
 
+const isMatchEnded = (utcDateTimeStr: string) => {
+  const matchTime = new Date(utcDateTimeStr).getTime();
+  const durationMs = 3.5 * 60 * 60 * 1000; // 3.5 hours duration (allows matching late stages)
+  return Date.now() > matchTime + durationMs;
+};
+
 const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>('');
-  const [selectedStreams, setSelectedStreams] = useState<Record<string, { id: string; channel_name: string; url: string }>>({});
   const [now, setNow] = useState(Date.now());
 
   // Update clock every 10 seconds for match scheduling/live windowing
@@ -190,19 +195,24 @@ const WorldCup = () => {
     refetchInterval: 15000,
   });
 
+  // Filter out any matches that have already ended in real-time
+  const activeMatches = useMemo(() => {
+    return matchesList.filter(m => !isMatchEnded(m.utcDateTime));
+  }, [now]);
+
   const dateTabs = useMemo(() => {
-    const dates = matchesList.map(m => getLocalDateString(m.utcDateTime));
+    const dates = activeMatches.map(m => getLocalDateString(m.utcDateTime));
     const uniqueDates = Array.from(new Set(dates));
     return uniqueDates.sort((a, b) => {
-      const matchA = matchesList.find(m => getLocalDateString(m.utcDateTime) === a);
-      const matchB = matchesList.find(m => getLocalDateString(m.utcDateTime) === b);
+      const matchA = activeMatches.find(m => getLocalDateString(m.utcDateTime) === a);
+      const matchB = activeMatches.find(m => getLocalDateString(m.utcDateTime) === b);
       if (!matchA || !matchB) return 0;
       return new Date(matchA.utcDateTime).getTime() - new Date(matchB.utcDateTime).getTime();
     });
-  }, []);
+  }, [activeMatches]);
 
   useEffect(() => {
-    if (dateTabs.length > 0 && !selectedDate) {
+    if (dateTabs.length > 0 && (!selectedDate || !dateTabs.includes(selectedDate))) {
       const todayStr = getLocalDateString(new Date().toISOString());
       if (dateTabs.includes(todayStr)) {
         setSelectedDate(todayStr);
@@ -213,8 +223,8 @@ const WorldCup = () => {
   }, [dateTabs, selectedDate]);
 
   const filteredMatches = useMemo(() => {
-    return matchesList.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
-  }, [selectedDate]);
+    return activeMatches.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
+  }, [activeMatches, selectedDate]);
 
   // Find a matching event in the live events API response
   const findMatchingLiveEvent = (matchTitle: string) => {
@@ -235,7 +245,7 @@ const WorldCup = () => {
 
   const isMatchLive = (utcDateTimeStr: string) => {
     const matchTime = new Date(utcDateTimeStr).getTime();
-    const durationMs = 3.5 * 60 * 60 * 1000; // 3.5 hour window (accounting for delays/overtime)
+    const durationMs = 3.5 * 60 * 60 * 1000; // 3.5 hour window
     return now >= matchTime && now <= matchTime + durationMs;
   };
 
@@ -260,9 +270,9 @@ const WorldCup = () => {
     return optionsList;
   };
 
-  const handleWatchMatch = (matchId: string, matchTitle: string) => {
+  const handleWatchMatch = (matchTitle: string) => {
     const streams = getStreamOptions(matchTitle);
-    const activeStream = selectedStreams[matchId] || streams[0];
+    const activeStream = streams[0]; // Start playing the first stream by default
 
     const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     
@@ -273,9 +283,10 @@ const WorldCup = () => {
 
     const targetChannel = {
       id: activeStream.id,
-      name: `${matchTitle} (${activeStream.channel_name})`,
+      name: matchTitle,
       streamUrl: playUrl,
-      groupTitle: 'Live Streams'
+      groupTitle: 'Live Streams',
+      streams: streams // Forward streams list to the Player Modal overlay!
     };
     
     openPlayer(targetChannel);
@@ -361,8 +372,6 @@ const WorldCup = () => {
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredMatches.map((match) => {
                 const live = isMatchLive(match.utcDateTime);
-                const streams = getStreamOptions(match.title);
-                const activeSelection = selectedStreams[match.id] || streams[0];
                 
                 return (
                   <div 
@@ -410,36 +419,13 @@ const WorldCup = () => {
                           </span>
                         </div>
                       </div>
-
-                      {/* Stream Dropdown (Only visible if match is LIVE) */}
-                      {live && streams.length > 0 && (
-                        <div className="mt-4 mb-2 animate-in fade-in slide-in-from-top-1 duration-200">
-                          <label className="text-[9px] font-black text-white/40 uppercase tracking-widest block mb-1">Select Live Feed</label>
-                          <select
-                            value={activeSelection?.id}
-                            onChange={(e) => {
-                              const s = streams.find(str => str.id === e.target.value);
-                              if (s) {
-                                setSelectedStreams(prev => ({ ...prev, [match.id]: s }));
-                              }
-                            }}
-                            className="w-full bg-[#0d0d0d] border border-white/10 rounded-xl px-3 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500/50 cursor-pointer"
-                          >
-                            {streams.map((s, idx) => (
-                              <option key={s.id} value={s.id} className="bg-[#050505] text-white">
-                                {`Feed ${idx + 1}: ${s.channel_name}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      )}
                     </div>
 
                     {/* Play Button Conditional on Live State */}
                     <div className="border-t border-white/5 pt-4 mt-2">
                       {live ? (
                         <button
-                          onClick={() => handleWatchMatch(match.id, match.title)}
+                          onClick={() => handleWatchMatch(match.title)}
                           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5"
                         >
                           <Play size={12} className="fill-current" />

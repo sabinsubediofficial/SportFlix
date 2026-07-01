@@ -36,6 +36,7 @@ function App() {
               url={selectedChannel.streamUrl} 
               channelName={selectedChannel.name}
               groupTitle={selectedChannel.groupTitle || 'General'}
+              streams={selectedChannel.streams}
               onBack={closePlayer}
               onPiPChange={handlePiPChange}
             />

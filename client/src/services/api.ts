@@ -19,6 +19,7 @@ export interface Channel {
   status?: string;
   popularity?: number;
   programs?: Program[];
+  streams?: { id: string; channel_name: string; url: string }[];
 }
 // ... rest of file
 
