@@ -77,12 +77,12 @@ const WorldCup = () => {
   }, [allMatches, selectedDate]);
 
   const handleWatchMatch = (matchId: string, matchTitle: string) => {
-    // Generate the player payload pointing to the resolved kobra watch page URL
+    // Generate the player payload pointing to the integrated cdnlivetv working live stream link
     const targetChannel = {
       id: matchId,
       name: matchTitle,
-      streamUrl: `https://www.ntvs.cx/watch/kobra/${matchId}`,
-      groupTitle: 'Live Matches'
+      streamUrl: 'https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc386/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzg2OjE3ODI4OTE0NDAxMDQ6Y2RubGl2ZXR2LnR2OjUxMWNiZDJiZTUyNDI4Y2UuMTA0YzU5OWE5YTIyMGNjNjFjNjg3ZGM3NDc1NzFlYjM3M2M5NmUwMDUwNzNhMzBhYzAyYTYwZmY0YjIzMTAyNw',
+      groupTitle: 'Live Streams'
     };
     openPlayer(targetChannel);
   };
