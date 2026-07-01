@@ -292,16 +292,6 @@ const WorldCup = () => {
     openPlayer(targetChannel);
   };
 
-  if (isLoading) return (
-    <div className="flex items-center justify-center h-screen bg-[#050505]">
-      <div className="relative">
-        <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
-        <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
-        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading schedules</div>
-      </div>
-    </div>
-  );
-
   return (
     <div className="min-h-screen bg-[#050505] pb-24">
       {/* World Cup Hero Banner */}
@@ -339,6 +329,9 @@ const WorldCup = () => {
             <div>
               <h2 className="text-3xl font-black text-white tracking-tight flex items-center gap-3">
                 <Calendar className="text-blue-500" /> Match Schedules
+                {isLoading && (
+                  <span className="inline-block w-4 h-4 border-2 border-white/10 border-t-blue-500 rounded-full animate-spin ml-2 shrink-0" />
+                )}
               </h2>
               <p className="text-white/40 text-sm mt-1">Official Round of 32 tournament schedules</p>
             </div>
