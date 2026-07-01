@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect, useRef } from 'react';
+import { useMemo, useState, useEffect } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { usePlayer } from '../context/PlayerContext';
 import { Trophy, Calendar, Play, Tv } from 'lucide-react';
@@ -10,6 +10,7 @@ interface RemoteChannel {
   viewers: number;
   url: string;
   image: string;
+  latency?: number;
 }
 
 interface RemoteEvent {
@@ -174,10 +175,6 @@ const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [now, setNow] = useState(Date.now());
-  
-  // Track latency check timings for stream urls
-  const [streamLatencies, setStreamLatencies] = useState<Record<string, number>>({});
-  const initiatedPings = useRef<Set<string>>(new Set());
 
   // Update clock every 10 seconds for match scheduling/live windowing
   useEffect(() => {
@@ -187,7 +184,7 @@ const WorldCup = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Fetch real-time sports stream event logs
+  // Fetch real-time sports stream event logs (returns immediately from server-side cache!)
   const { data, isLoading } = useQuery({
     queryKey: ['cdnLiveEventsList'],
     queryFn: async () => {
@@ -253,52 +250,7 @@ const WorldCup = () => {
     return now >= matchTime && now <= matchTime + durationMs;
   };
 
-  // Ping check background effect for live stream URLs
-  useEffect(() => {
-    if (!data || !data['cdn-live-tv'] || !data['cdn-live-tv']['Soccer']) return;
-    const soccerEvents = data['cdn-live-tv']['Soccer'];
-    if (!Array.isArray(soccerEvents)) return;
-
-    const urlsToPing: string[] = [];
-    activeMatches.forEach(match => {
-      if (isMatchLive(match.utcDateTime)) {
-        const liveEvent = findMatchingLiveEvent(match.title);
-        if (liveEvent && liveEvent.channels) {
-          liveEvent.channels.forEach(c => {
-            if (c.url && !urlsToPing.includes(c.url) && !initiatedPings.current.has(c.url)) {
-              urlsToPing.push(c.url);
-            }
-          });
-        }
-      }
-    });
-
-    if (urlsToPing.length === 0) return;
-
-    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
-
-    urlsToPing.forEach(async (url) => {
-      initiatedPings.current.add(url);
-      // Set to -1 to denote "pinging in progress"
-      setStreamLatencies(prev => ({ ...prev, [url]: -1 }));
-      try {
-        const res = await fetch(`${apiBase}/channels/ping?url=${encodeURIComponent(url)}`);
-        if (res.ok) {
-          const result = await res.json();
-          setStreamLatencies(prev => ({
-            ...prev,
-            [url]: result.success ? result.latency : 9999
-          }));
-        } else {
-          setStreamLatencies(prev => ({ ...prev, [url]: 9999 }));
-        }
-      } catch {
-        setStreamLatencies(prev => ({ ...prev, [url]: 9999 }));
-      }
-    });
-  }, [data, activeMatches]);
-
-  // Compile available streams for a live match (API streams only, sorted by ping response)
+  // Compile available streams for a live match (already pinged & sorted on backend)
   const getStreamOptions = (matchTitle: string) => {
     const optionsList: { id: string; channel_name: string; url: string; latency: number }[] = [];
     const liveEvent = findMatchingLiveEvent(matchTitle);
@@ -326,13 +278,13 @@ const WorldCup = () => {
       const targetChannels = sportsChannels.length > 0 ? sportsChannels : generalChannels;
 
       targetChannels.forEach(c => {
-        const lat = streamLatencies[c.url];
+        const lat = c.latency;
         let label = '';
         let sortLatency = 9999;
 
         if (lat === -1) {
           label = ' (pinging...)';
-          sortLatency = 5000; // Place above offline but below ready ones
+          sortLatency = 5000;
         } else if (lat === 9999) {
           label = ' (offline)';
           sortLatency = 9999;
@@ -349,7 +301,7 @@ const WorldCup = () => {
         });
       });
 
-      // Sort by measured latency ascending (fastest streams first)
+      // Sort by backend-measured latency ascending
       optionsList.sort((a, b) => a.latency - b.latency);
     }
 
@@ -373,21 +325,11 @@ const WorldCup = () => {
       name: matchTitle,
       streamUrl: playUrl,
       groupTitle: 'Live Streams',
-      streams: streams // Forward sorted and labeled streams list to player modal!
+      streams: streams // Forward streams list to player modal
     };
     
     openPlayer(targetChannel);
   };
-
-  if (isLoading && activeMatches.length === 0) return (
-    <div className="flex items-center justify-center h-screen bg-[#050505]">
-      <div className="relative">
-        <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
-        <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
-        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading schedules</div>
-      </div>
-    </div>
-  );
 
   return (
     <div className="min-h-screen bg-[#050505] pb-24">

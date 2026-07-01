@@ -254,8 +254,37 @@ router.get('/live-matches', async (req, res) => {
   }
 });
 
-// Proxy route to pull live sports events from cdn-live-tv
-router.get('/live-events', async (req, res) => {
+// Background cache storage for sports events and stream latencies
+let cachedEventsData: any = null;
+const streamLatencyCache: Record<string, number> = {};
+const activePings = new Set<string>();
+
+// Helper to ping a stream URL on the server side
+async function pingStream(url: string): Promise<number> {
+  try {
+    const start = Date.now();
+    await axios.head(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0' },
+      timeout: 2500
+    });
+    return Date.now() - start;
+  } catch {
+    try {
+      const start = Date.now();
+      await axios.get(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0' },
+        timeout: 2500,
+        maxContentLength: 100
+      });
+      return Date.now() - start;
+    } catch {
+      return 9999; // offline / timeout
+    }
+  }
+}
+
+// Background worker to fetch, filter soccer streams, and test latencies
+async function refreshEventsAndPings() {
   try {
     const response = await axios.get('https://api.cdnlivetv.tv/api/v1/events/sports/?user=cdnlivetv&plan=free', {
       headers: {
@@ -284,10 +313,66 @@ router.get('/live-events', async (req, res) => {
       }
     }
 
+    // Identify active soccer streams to check
+    const urlsToPing: string[] = [];
+    filteredSoccer.forEach((e: any) => {
+      if (e.channels && Array.isArray(e.channels)) {
+        e.channels.forEach((c: any) => {
+          if (c.url && !urlsToPing.includes(c.url)) {
+            urlsToPing.push(c.url);
+          }
+        });
+      }
+    });
+
+    // Execute server-side latency pings in parallel
+    urlsToPing.forEach(url => {
+      if (!activePings.has(url)) {
+        activePings.add(url);
+        pingStream(url).then(latency => {
+          streamLatencyCache[url] = latency;
+          activePings.delete(url);
+        });
+      }
+    });
+
+    cachedEventsData = filteredSoccer;
+  } catch (error: any) {
+    console.error('Failed to auto refresh events/pings:', error.message);
+  }
+}
+
+// Start auto-refresh interval: run every 30 seconds
+setInterval(refreshEventsAndPings, 30000);
+// Trigger initial fetch
+refreshEventsAndPings();
+
+// Proxy route to pull live sports events from cdn-live-tv (returns immediately from server cache!)
+router.get('/live-events', async (req, res) => {
+  try {
+    if (!cachedEventsData) {
+      await refreshEventsAndPings();
+    }
+
+    // Decorate channels in response with backend-cached stream latencies
+    const soccerEvents = (cachedEventsData || []).map((e: any) => {
+      const channels = (e.channels || []).map((c: any) => {
+        const lat = streamLatencyCache[c.url];
+        return {
+          ...c,
+          latency: lat !== undefined ? lat : -1 // -1 means pinging/pending
+        };
+      });
+      return {
+        ...e,
+        channels
+      };
+    });
+
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.json({
       'cdn-live-tv': {
-        'Soccer': filteredSoccer
+        'Soccer': soccerEvents
       }
     });
   } catch (error: any) {
@@ -306,26 +391,20 @@ router.get('/ping', async (req, res) => {
   const targetUrl = String(url);
   try {
     const start = Date.now();
-    // Try HEAD request first (low bandwidth)
     await axios.head(targetUrl, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0' },
       timeout: 3000
     });
     const latency = Date.now() - start;
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.json({ success: true, latency });
   } catch (error) {
-    // Fall back to GET if HEAD request is blocked/unsupported
     try {
       const start = Date.now();
       await axios.get(targetUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-        },
+        headers: { 'User-Agent': 'Mozilla/5.0' },
         timeout: 3000,
-        maxContentLength: 100 // Avoid downloading full body
+        maxContentLength: 100
       });
       const latency = Date.now() - start;
       res.setHeader('Access-Control-Allow-Origin', '*');
