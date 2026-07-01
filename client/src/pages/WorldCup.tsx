@@ -255,7 +255,32 @@ const WorldCup = () => {
     const liveEvent = findMatchingLiveEvent(matchTitle);
 
     if (liveEvent && liveEvent.channels && liveEvent.channels.length > 0) {
+      const sportsChannels: RemoteChannel[] = [];
+      const generalChannels: RemoteChannel[] = [];
+
       liveEvent.channels.forEach(c => {
+        const name = c.channel_name.toLowerCase();
+        // Check if name contains common sports channel brands/indicators
+        const isSportsBrand = ['sport', 'bein', 'supersport', 'espn', 'tsn', 'canal', 'magenta', 'deportes', 'tudn', 'optus', 'sky', 'euro'].some(kw => name.includes(kw));
+        
+        // Check if it's a general network affiliate (e.g. general FOX/BBC/ITV/NBC local channels that aren't sports-branded)
+        const isGeneralAffiliate = (name.includes('fox') && !name.includes('sport')) ||
+                                   (name.includes('bbc') && !name.includes('sport')) ||
+                                   (name.includes('itv') && !name.includes('sport')) ||
+                                   (name.includes('nbc') && !name.includes('sport')) ||
+                                   (name.includes('cbs') && !name.includes('sport'));
+
+        if (isSportsBrand && !isGeneralAffiliate) {
+          sportsChannels.push(c);
+        } else {
+          generalChannels.push(c);
+        }
+      });
+
+      // Prefer dedicated sports channels; fall back to general channels only if no sports-specific feeds are mapped
+      const targetChannels = sportsChannels.length > 0 ? sportsChannels : generalChannels;
+
+      targetChannels.forEach(c => {
         optionsList.push({ id: c.id, channel_name: c.channel_name, url: c.url });
       });
     }
