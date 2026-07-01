@@ -104,10 +104,11 @@ const WorldCup = () => {
     
     const soccerEvents: RemoteEvent[] = data['cdn-live-tv']['Soccer'];
     
-    // Filter for FIFA World Cup matches only
+    // Filter for FIFA World Cup matches only (with valid team names)
     const worldCupEvents = soccerEvents.filter(e => 
-      e.tournament.toLowerCase().includes('world cup') ||
-      e.tournament.toLowerCase().includes('fifa')
+      (e.tournament.toLowerCase().includes('world cup') || e.tournament.toLowerCase().includes('fifa')) &&
+      e.homeTeam.trim() !== '' &&
+      e.awayTeam.trim() !== ''
     );
 
     return worldCupEvents.map(e => {
