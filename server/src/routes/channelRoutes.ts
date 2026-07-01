@@ -265,8 +265,31 @@ router.get('/live-events', async (req, res) => {
       timeout: 15000
     });
 
+    const data = response.data;
+    let filteredSoccer: any[] = [];
+
+    if (data && data['cdn-live-tv'] && data['cdn-live-tv']['Soccer']) {
+      const soccerEvents = data['cdn-live-tv']['Soccer'];
+      if (Array.isArray(soccerEvents)) {
+        filteredSoccer = soccerEvents.filter((e: any) => {
+          const tournament = String(e.tournament || '').toLowerCase();
+          const homeTeam = String(e.homeTeam || '').trim();
+          const awayTeam = String(e.awayTeam || '').trim();
+          return (
+            (tournament.includes('world cup') || tournament.includes('fifa')) &&
+            homeTeam !== '' &&
+            awayTeam !== ''
+          );
+        });
+      }
+    }
+
     res.setHeader('Access-Control-Allow-Origin', '*');
-    res.json(response.data);
+    res.json({
+      'cdn-live-tv': {
+        'Soccer': filteredSoccer
+      }
+    });
   } catch (error: any) {
     res.status(500).json({ success: false, error: 'Failed to fetch sports events from api', details: error.message });
   }
