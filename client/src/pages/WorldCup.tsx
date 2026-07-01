@@ -61,7 +61,7 @@ const WorldCup = () => {
 
   const allMatches = useMemo(() => {
     if (!data || !data.all) return [];
-    return data.all;
+    return data.all.filter(m => m.category?.toLowerCase() === 'football');
   }, [data]);
 
   const dateTabs = useMemo(() => {
