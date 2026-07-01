@@ -249,7 +249,7 @@ const WorldCup = () => {
     return now >= matchTime && now <= matchTime + durationMs;
   };
 
-  // Compile available streams for a live match (API streams + fallback direct HLS stream)
+  // Compile available streams for a live match (API streams only)
   const getStreamOptions = (matchTitle: string) => {
     const optionsList: { id: string; channel_name: string; url: string }[] = [];
     const liveEvent = findMatchingLiveEvent(matchTitle);
@@ -259,13 +259,6 @@ const WorldCup = () => {
         optionsList.push({ id: c.id, channel_name: c.channel_name, url: c.url });
       });
     }
-
-    // Always include the premium direct HLS playlist as a stable option
-    optionsList.push({
-      id: 'fallback-hls',
-      channel_name: 'Premium HLS Live Feed',
-      url: 'https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc386/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzg2OjE3ODI4OTE0NDAxMDQ6Y2RubGl2ZXR2LnR2OjUxMWNiZDJiZTUyNDI4Y2UuMTA0YzU5OWE5YTIyMGNjNjFjNjg3ZGM3NDc1NzFlYjM3M2M5NmUwMDUwNzNhMzBhYzAyYTYwZmY0YjIzMTAyNw'
-    });
 
     return optionsList;
   };
@@ -364,7 +357,9 @@ const WorldCup = () => {
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredMatches.map((match) => {
-                const live = isMatchLive(match.utcDateTime);
+                const streams = getStreamOptions(match.title);
+                const hasStreams = streams.length > 0;
+                const isCurrentlyLive = isMatchLive(match.utcDateTime) && hasStreams;
                 
                 return (
                   <div 
@@ -374,11 +369,11 @@ const WorldCup = () => {
                     <div>
                       <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
                         <span className="flex items-center gap-1">
-                          <span className={`w-1.5 h-1.5 rounded-full ${live ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`} />
+                          <span className={`w-1.5 h-1.5 rounded-full ${isCurrentlyLive ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`} />
                           FIFA World Cup
                         </span>
                         <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">
-                          {live ? 'LIVE' : getLocalTimeString(match.utcDateTime)}
+                          {isCurrentlyLive ? 'LIVE' : getLocalTimeString(match.utcDateTime)}
                         </span>
                       </div>
 
@@ -416,7 +411,7 @@ const WorldCup = () => {
 
                     {/* Play Button Conditional on Live State */}
                     <div className="border-t border-white/5 pt-4 mt-2">
-                      {live ? (
+                      {isCurrentlyLive ? (
                         <button
                           onClick={() => handleWatchMatch(match.title)}
                           className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5"
@@ -425,6 +420,10 @@ const WorldCup = () => {
                           <span>WATCH LIVE NOW</span>
                           <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
                         </button>
+                      ) : isMatchLive(match.utcDateTime) ? (
+                        <div className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black border border-white/5 bg-white/5 text-white/30 select-none">
+                          <span>STREAMS COMING SOON</span>
+                        </div>
                       ) : (
                         <div className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black border border-white/5 bg-white/5 text-white/30 select-none">
                           <span>UPCOMING MATCH</span>
