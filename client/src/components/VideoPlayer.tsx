@@ -221,9 +221,16 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
         hls = new Hls({
           enableWorker: true,
           lowLatencyMode: true,
-          backBufferLength: 60,
-          manifestLoadingMaxRetry: 4,
-          levelLoadingMaxRetry: 4
+          backBufferLength: 30, // free back buffer memory sooner
+          maxBufferLength: 10,  // target 10s forward buffer for 3x faster startup
+          maxMaxBufferLength: 15,
+          maxBufferSize: 20 * 1024 * 1024, // limit buffer to 20MB to prevent bandwidth congestion
+          liveSyncDuration: 3, // start closer to live edge (less initial load)
+          liveMaxLatencyDuration: 6,
+          manifestLoadingMaxRetry: 6,
+          levelLoadingMaxRetry: 6,
+          fragLoadingMaxRetry: 6,
+          nudgeMaxRetry: 5
         });
         hls.loadSource(streamUrl);
         hls.attachMedia(video);
@@ -232,14 +239,13 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
           if (autoPlay) video.play().catch(() => setIsPlaying(false));
         });
 
+        let mediaErrorCount = 0;
+        let networkErrorCount = 0;
+
         hls.on(Hls.Events.ERROR, (_event, data) => {
           if (data.fatal) {
             console.error('HLS Fatal Error:', data);
-            if (data.type === Hls.ErrorTypes.NETWORK_ERROR && !useProxy) {
-              console.log('Network error encountered. Retrying stream via backend CORS proxy...');
-              setUseProxy(true);
-              return;
-            }
+            
             const isRestrictedChannel = channelName && (
               channelName.toLowerCase().includes('bbc') || 
               channelName.toLowerCase().includes('fox') || 
@@ -247,21 +253,34 @@ const VideoPlayerInternal: React.FC<InternalProps> = ({
             );
             
             const customErrorMessage = isRestrictedChannel
-              ? "This stream is currently offline or restricted in your region. Please try alternative active streams like ITV Deportes or TSN The Ocho."
+              ? "This stream is currently offline or restricted in your region. Please try alternative active streams."
               : "Network error: Failed to load stream. Please check your connection.";
 
-            switch (data.type) {
-              case Hls.ErrorTypes.NETWORK_ERROR:
-                setError(customErrorMessage);
-                break;
-              case Hls.ErrorTypes.MEDIA_ERROR:
+            if (data.type === Hls.ErrorTypes.MEDIA_ERROR) {
+              mediaErrorCount++;
+              if (mediaErrorCount <= 3) {
+                console.warn(`Media playback error. Attempting recovery ${mediaErrorCount}/3...`);
+                hls?.recoverMediaError();
+              } else {
                 setError("Media error: The stream format is unsupported or corrupted.");
-                break;
-              default:
-                setError("A fatal error occurred during playback.");
-                break;
+                hls?.destroy();
+              }
+            } else if (data.type === Hls.ErrorTypes.NETWORK_ERROR) {
+              networkErrorCount++;
+              if (networkErrorCount <= 4) {
+                console.warn(`Network connection dropped. Attempting recovery ${networkErrorCount}/4...`);
+                hls?.startLoad();
+              } else if (!useProxy) {
+                console.log('Network retries exhausted. Trying CORS proxy...');
+                setUseProxy(true);
+              } else {
+                setError(customErrorMessage);
+                hls?.destroy();
+              }
+            } else {
+              setError("A fatal error occurred during playback.");
+              hls?.destroy();
             }
-            if (hls) hls.destroy();
           }
         });
       } else if (video.canPlayType('application/vnd.apple.mpegurl')) {
