@@ -33,6 +33,13 @@ const getTabLabel = (dateStr: string) => {
   return `${dayName} - ${dateStr}`;
 };
 
+const getBadgeUrl = (badgeHash: string) => {
+  if (!badgeHash) return '';
+  if (badgeHash.startsWith('http')) return badgeHash;
+  if (badgeHash.startsWith('/api')) return `https://www.ntvs.cx${badgeHash}`;
+  return `https://www.ntvs.cx/api/images/proxy/${badgeHash}.webp`;
+};
+
 const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>(() => {
@@ -49,7 +56,7 @@ const WorldCup = () => {
       if (!res.ok) throw new Error(`Server returned status ${res.status}`);
       return res.json();
     },
-    refetchInterval: 30000, // refresh every 30 seconds
+    refetchInterval: 15000, // refresh every 15 seconds (real-time updates)
   });
 
   const allMatches = useMemo(() => {
@@ -206,7 +213,7 @@ const WorldCup = () => {
                         </span>
                         {match.teams.home.badge && (
                           <img 
-                            src={match.teams.home.badge.startsWith('http') ? match.teams.home.badge : `https://www.ntvs.cx${match.teams.home.badge}`} 
+                            src={getBadgeUrl(match.teams.home.badge)} 
                             alt={match.teams.home.name} 
                             className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md"
                           />
@@ -218,7 +225,7 @@ const WorldCup = () => {
                       <div className="flex items-center space-x-3 flex-1 justify-start">
                         {match.teams.away.badge && (
                           <img 
-                            src={match.teams.away.badge.startsWith('http') ? match.teams.away.badge : `https://www.ntvs.cx${match.teams.away.badge}`} 
+                            src={getBadgeUrl(match.teams.away.badge)} 
                             alt={match.teams.away.name} 
                             className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md"
                           />
@@ -230,22 +237,22 @@ const WorldCup = () => {
                     </div>
                   </div>
 
-                  {/* Play Button */}
+                  {/* Play Button Conditional on Live State */}
                   <div className="border-t border-white/5 pt-4 mt-2">
-                    <button
-                      onClick={() => handleWatchMatch(match.id, match.title)}
-                      className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border ${
-                        match.live
-                          ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5'
-                          : 'bg-blue-600/10 text-blue-400 border-blue-500/20 hover:bg-blue-600 hover:text-white'
-                      }`}
-                    >
-                      <Play size={12} className="fill-current" />
-                      <span>{match.live ? 'WATCH LIVE NOW' : 'WATCH PLAYBACK'}</span>
-                      {match.live && (
+                    {match.live ? (
+                      <button
+                        onClick={() => handleWatchMatch(match.id, match.title)}
+                        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5"
+                      >
+                        <Play size={12} className="fill-current" />
+                        <span>WATCH LIVE NOW</span>
                         <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      )}
-                    </button>
+                      </button>
+                    ) : (
+                      <div className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black border border-white/5 bg-white/5 text-white/30 select-none">
+                        <span>UPCOMING MATCH</span>
+                      </div>
+                    )}
                   </div>
                 </div>
               ))}
