@@ -29,49 +29,130 @@ interface RemoteEvent {
   channels: RemoteChannel[];
 }
 
-const flagMapping: Record<string, string> = {
-  'côte d’ivoire': 'ci',
-  'cote d\'ivoire': 'ci',
-  'norway': 'no',
-  'france': 'fr',
-  'sweden': 'se',
-  'mexico': 'mx',
-  'ecuador': 'ec',
-  'england': 'gb-eng',
-  'dr congo': 'cd',
-  'congo': 'cd',
-  'belgium': 'be',
-  'senegal': 'sn',
-  'usa': 'us',
-  'united states': 'us',
-  'bosnia and herzegovina': 'ba',
-  'bosnia': 'ba',
-  'spain': 'es',
-  'austria': 'at',
-  'portugal': 'pt',
-  'croatia': 'hr',
-  'switzerland': 'ch',
-  'algeria': 'dz',
-  'australia': 'au',
-  'egypt': 'eg',
-  'argentina': 'ar',
-  'cape verde': 'cv',
-  'colombia': 'co',
-  'ghana': 'gh',
-  'morocco': 'ma',
-  'canada': 'ca'
-};
+interface Match {
+  id: string;
+  title: string;
+  utcDateTime: string; // ISO format
+  teams: {
+    home: { name: string; flagUrl: string };
+    away: { name: string; flagUrl: string };
+  };
+}
 
-const getCountryFlagUrl = (teamName: string) => {
-  if (!teamName) return 'https://flagcdn.com/w80/un.png';
-  const lower = teamName.toLowerCase().trim();
-  for (const [key, code] of Object.entries(flagMapping)) {
-    if (lower.includes(key) || key.includes(lower)) {
-      return `https://flagcdn.com/w80/${code}.png`;
+const matchesList: Match[] = [
+  // Tuesday, June 30
+  {
+    id: 'm-ci-no',
+    title: 'Côte d’Ivoire vs Norway',
+    utcDateTime: '2026-06-30T17:00:00Z',
+    teams: {
+      home: { name: 'Côte d’Ivoire', flagUrl: 'https://flagcdn.com/w80/ci.png' },
+      away: { name: 'Norway', flagUrl: 'https://flagcdn.com/w80/no.png' }
+    }
+  },
+  {
+    id: 'm-fr-se',
+    title: 'France vs Sweden',
+    utcDateTime: '2026-06-30T20:00:00Z',
+    teams: {
+      home: { name: 'France', flagUrl: 'https://flagcdn.com/w80/fr.png' },
+      away: { name: 'Sweden', flagUrl: 'https://flagcdn.com/w80/se.png' }
+    }
+  },
+  {
+    id: 'm-mx-ec',
+    title: 'Mexico vs Ecuador',
+    utcDateTime: '2026-07-01T01:00:00Z',
+    teams: {
+      home: { name: 'Mexico', flagUrl: 'https://flagcdn.com/w80/mx.png' },
+      away: { name: 'Ecuador', flagUrl: 'https://flagcdn.com/w80/ec.png' }
+    }
+  },
+  // Wednesday, July 1
+  {
+    id: 'm-eng-cd',
+    title: 'England vs DR Congo',
+    utcDateTime: '2026-07-01T16:00:00Z',
+    teams: {
+      home: { name: 'England', flagUrl: 'https://flagcdn.com/w80/gb-eng.png' },
+      away: { name: 'DR Congo', flagUrl: 'https://flagcdn.com/w80/cd.png' }
+    }
+  },
+  {
+    id: 'm-be-sn',
+    title: 'Belgium vs Senegal',
+    utcDateTime: '2026-07-01T20:00:00Z',
+    teams: {
+      home: { name: 'Belgium', flagUrl: 'https://flagcdn.com/w80/be.png' },
+      away: { name: 'Senegal', flagUrl: 'https://flagcdn.com/w80/sn.png' }
+    }
+  },
+  {
+    id: 'm-us-ba',
+    title: 'USA vs Bosnia and Herzegovina',
+    utcDateTime: '2026-07-02T00:00:00Z',
+    teams: {
+      home: { name: 'USA', flagUrl: 'https://flagcdn.com/w80/us.png' },
+      away: { name: 'Bosnia & Herzegovina', flagUrl: 'https://flagcdn.com/w80/ba.png' }
+    }
+  },
+  // Thursday, July 2
+  {
+    id: 'm-es-at',
+    title: 'Spain vs Austria',
+    utcDateTime: '2026-07-02T19:00:00Z',
+    teams: {
+      home: { name: 'Spain', flagUrl: 'https://flagcdn.com/w80/es.png' },
+      away: { name: 'Austria', flagUrl: 'https://flagcdn.com/w80/at.png' }
+    }
+  },
+  {
+    id: 'm-pt-hr',
+    title: 'Portugal vs Croatia',
+    utcDateTime: '2026-07-02T23:00:00Z',
+    teams: {
+      home: { name: 'Portugal', flagUrl: 'https://flagcdn.com/w80/pt.png' },
+      away: { name: 'Croatia', flagUrl: 'https://flagcdn.com/w80/hr.png' }
+    }
+  },
+  {
+    id: 'm-ch-dz',
+    title: 'Switzerland vs Algeria',
+    utcDateTime: '2026-07-03T03:00:00Z',
+    teams: {
+      home: { name: 'Switzerland', flagUrl: 'https://flagcdn.com/w80/ch.png' },
+      away: { name: 'Algeria', flagUrl: 'https://flagcdn.com/w80/dz.png' }
+    }
+  },
+  // Friday, July 3
+  {
+    id: 'm-au-eg',
+    title: 'Australia vs Egypt',
+    utcDateTime: '2026-07-03T18:00:00Z',
+    teams: {
+      home: { name: 'Australia', flagUrl: 'https://flagcdn.com/w80/au.png' },
+      away: { name: 'Egypt', flagUrl: 'https://flagcdn.com/w80/eg.png' }
+    }
+  },
+  {
+    id: 'm-ar-cv',
+    title: 'Argentina vs Cape Verde',
+    utcDateTime: '2026-07-03T22:00:00Z',
+    teams: {
+      home: { name: 'Argentina', flagUrl: 'https://flagcdn.com/w80/ar.png' },
+      away: { name: 'Cape Verde', flagUrl: 'https://flagcdn.com/w80/cv.png' }
+    }
+  },
+  {
+    id: 'm-co-gh',
+    title: 'Colombia vs Ghana',
+    utcDateTime: '2026-07-04T01:30:00Z',
+    teams: {
+      home: { name: 'Colombia', flagUrl: 'https://flagcdn.com/w80/co.png' },
+      away: { name: 'Ghana', flagUrl: 'https://flagcdn.com/w80/gh.png' }
     }
   }
-  return 'https://flagcdn.com/w80/un.png';
-};
+];
 
 const getLocalDateString = (utcDateTimeStr: string) => {
   const dateObj = new Date(utcDateTimeStr);
@@ -86,65 +167,40 @@ const getLocalTimeString = (utcDateTimeStr: string) => {
 const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>('');
+  const [selectedStreams, setSelectedStreams] = useState<Record<string, { id: string; channel_name: string; url: string }>>({});
+  const [now, setNow] = useState(Date.now());
 
-  // Pull live events list from our CDN live API proxy
-  const { data, isLoading, error } = useQuery({
-    queryKey: ['cdnLiveEvents'],
+  // Update clock every 10 seconds for match scheduling/live windowing
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setNow(Date.now());
+    }, 10000);
+    return () => clearInterval(interval);
+  }, []);
+
+  // Fetch real-time sports stream event logs
+  const { data, isLoading } = useQuery({
+    queryKey: ['cdnLiveEventsList'],
     queryFn: async () => {
       const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
       const res = await fetch(`${apiBase}/channels/live-events`);
       if (!res.ok) throw new Error(`Server returned status ${res.status}`);
       return res.json();
     },
-    refetchInterval: 15000, // refresh every 15 seconds for real-time states
+    refetchInterval: 15000,
   });
 
-  const parsedMatches = useMemo(() => {
-    if (!data || !data['cdn-live-tv'] || !data['cdn-live-tv']['Soccer']) return [];
-    
-    const soccerEvents: RemoteEvent[] = data['cdn-live-tv']['Soccer'];
-    
-    // Filter for FIFA World Cup matches only (with valid team names)
-    const worldCupEvents = soccerEvents.filter(e => 
-      (e.tournament.toLowerCase().includes('world cup') || e.tournament.toLowerCase().includes('fifa')) &&
-      e.homeTeam.trim() !== '' &&
-      e.awayTeam.trim() !== ''
-    );
-
-    return worldCupEvents.map(e => {
-      // Start time in the API is in UTC format "YYYY-MM-DD HH:mm"
-      const parsedUtcTime = e.start.replace(' ', 'T') + 'Z';
-      const homeName = e.homeTeam.trim() || 'TBD';
-      const awayName = e.awayTeam.trim() || 'TBD';
-      
-      const liveStatus = ['LIVE', '1H', '2H', 'HT'].includes(e.status.toUpperCase());
-
-      return {
-        id: e.gameID,
-        title: homeName !== 'TBD' ? `${homeName} vs ${awayName}` : e.tournament,
-        utcDateTime: parsedUtcTime,
-        homeTeam: homeName,
-        awayTeam: awayName,
-        homeFlag: getCountryFlagUrl(homeName),
-        awayFlag: getCountryFlagUrl(awayName),
-        live: liveStatus,
-        statusLabel: e.status,
-        channels: e.channels || []
-      };
-    });
-  }, [data]);
-
-  // Sort matches chronologically
-  const sortedMatches = useMemo(() => {
-    return [...parsedMatches].sort((a, b) => new Date(a.utcDateTime).getTime() - new Date(b.utcDateTime).getTime());
-  }, [parsedMatches]);
-
   const dateTabs = useMemo(() => {
-    const dates = sortedMatches.map(m => getLocalDateString(m.utcDateTime));
-    return Array.from(new Set(dates));
-  }, [sortedMatches]);
+    const dates = matchesList.map(m => getLocalDateString(m.utcDateTime));
+    const uniqueDates = Array.from(new Set(dates));
+    return uniqueDates.sort((a, b) => {
+      const matchA = matchesList.find(m => getLocalDateString(m.utcDateTime) === a);
+      const matchB = matchesList.find(m => getLocalDateString(m.utcDateTime) === b);
+      if (!matchA || !matchB) return 0;
+      return new Date(matchA.utcDateTime).getTime() - new Date(matchB.utcDateTime).getTime();
+    });
+  }, []);
 
-  // Auto-select active date tab
   useEffect(() => {
     if (dateTabs.length > 0 && !selectedDate) {
       const todayStr = getLocalDateString(new Date().toISOString());
@@ -157,31 +213,68 @@ const WorldCup = () => {
   }, [dateTabs, selectedDate]);
 
   const filteredMatches = useMemo(() => {
-    return sortedMatches.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
-  }, [sortedMatches, selectedDate]);
+    return matchesList.filter(match => getLocalDateString(match.utcDateTime) === selectedDate);
+  }, [selectedDate]);
 
-  const handleWatchMatch = (matchTitle: string, channels: RemoteChannel[]) => {
-    // Select the best stream channel (English feeds like US, UK, Fox, ITV first)
-    let bestChannel = channels.find(c => 
-      c.channel_name.toUpperCase().includes('US') ||
-      c.channel_name.toUpperCase().includes('UK') ||
-      c.channel_name.toUpperCase().includes('ENG') ||
-      c.channel_name.toUpperCase().includes('FOX') ||
-      c.channel_name.toUpperCase().includes('ITV')
+  // Find a matching event in the live events API response
+  const findMatchingLiveEvent = (matchTitle: string) => {
+    if (!data || !data['cdn-live-tv'] || !data['cdn-live-tv']['Soccer']) return null;
+    const soccerEvents: RemoteEvent[] = data['cdn-live-tv']['Soccer'];
+    
+    const parts = matchTitle.toLowerCase().split('vs');
+    if (parts.length < 2) return null;
+    const teamA = parts[0].trim();
+    const teamB = parts[1].trim();
+
+    return soccerEvents.find(e => 
+      (e.homeTeam.toLowerCase().includes(teamA) || e.awayTeam.toLowerCase().includes(teamA) ||
+       e.homeTeam.toLowerCase().includes(teamB) || e.awayTeam.toLowerCase().includes(teamB)) &&
+      (e.tournament.toLowerCase().includes('world cup') || e.tournament.toLowerCase().includes('fifa'))
     );
+  };
 
-    if (!bestChannel && channels.length > 0) {
-      bestChannel = channels[0];
+  const isMatchLive = (utcDateTimeStr: string) => {
+    const matchTime = new Date(utcDateTimeStr).getTime();
+    const durationMs = 3.5 * 60 * 60 * 1000; // 3.5 hour window (accounting for delays/overtime)
+    return now >= matchTime && now <= matchTime + durationMs;
+  };
+
+  // Compile available streams for a live match (API streams + fallback direct HLS stream)
+  const getStreamOptions = (matchTitle: string) => {
+    const optionsList: { id: string; channel_name: string; url: string }[] = [];
+    const liveEvent = findMatchingLiveEvent(matchTitle);
+
+    if (liveEvent && liveEvent.channels && liveEvent.channels.length > 0) {
+      liveEvent.channels.forEach(c => {
+        optionsList.push({ id: c.id, channel_name: c.channel_name, url: c.url });
+      });
     }
 
-    const streamUrl = bestChannel 
-      ? bestChannel.url 
-      : 'https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc386/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzg2OjE3ODI4OTE0NDAxMDQ6Y2RubGl2ZXR2LnR2OjUxMWNiZDJiZTUyNDI4Y2UuMTA0YzU5OWE5YTIyMGNjNjFjNjg3ZGM3NDc1NzFlYjM3M2M5NmUwMDUwNzNhMzBhYzAyYTYwZmY0YjIzMTAyNw';
+    // Always include the premium direct HLS playlist as a stable option
+    optionsList.push({
+      id: 'fallback-hls',
+      channel_name: 'Premium HLS Live Feed',
+      url: 'https://cdnlivetv.tv/secure/api/v1/6a288d2a81d8192bb76cc386/playlist.m3u8?token=NmEyODhkMmE4MWQ4MTkyYmI3NmNjMzg2OjE3ODI4OTE0NDAxMDQ6Y2RubGl2ZXR2LnR2OjUxMWNiZDJiZTUyNDI4Y2UuMTA0YzU5OWE5YTIyMGNjNjFjNjg3ZGM3NDc1NzFlYjM3M2M5NmUwMDUwNzNhMzBhYzAyYTYwZmY0YjIzMTAyNw'
+    });
+
+    return optionsList;
+  };
+
+  const handleWatchMatch = (matchId: string, matchTitle: string) => {
+    const streams = getStreamOptions(matchTitle);
+    const activeStream = selectedStreams[matchId] || streams[0];
+
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+    
+    // Route through ad-blocking player proxy if it's an iframe player url
+    const playUrl = activeStream.url.includes('.m3u8')
+      ? activeStream.url
+      : `${apiBase}/channels/player-proxy?url=${encodeURIComponent(activeStream.url)}`;
 
     const targetChannel = {
-      id: bestChannel ? bestChannel.id : 'fallback-fifa',
-      name: matchTitle,
-      streamUrl: streamUrl,
+      id: activeStream.id,
+      name: `${matchTitle} (${activeStream.channel_name})`,
+      streamUrl: playUrl,
       groupTitle: 'Live Streams'
     };
     
@@ -193,24 +286,7 @@ const WorldCup = () => {
       <div className="relative">
         <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
         <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
-        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading FIFA Streams</div>
-      </div>
-    </div>
-  );
-
-  if (error) return (
-    <div className="flex flex-col items-center justify-center h-screen bg-[#050505] p-6 text-center">
-      <div className="w-16 h-16 bg-red-500/10 border border-red-500/20 rounded-2xl flex items-center justify-center mb-4">
-        <Trophy className="w-8 h-8 text-red-500" />
-      </div>
-      <h3 className="text-xl font-bold text-white mb-2">API Connection Failed</h3>
-      <p className="text-white/60 max-w-md mb-6 text-sm">
-        Could not load live schedules. Your Vercel environment variable <code>VITE_API_URL</code> might be missing or your backend server is offline.
-      </p>
-      <div className="bg-white/5 border border-white/5 p-4 rounded-xl text-left max-w-md w-full font-mono text-[10px] text-white/40 break-all">
-        Attempted endpoint: {import.meta.env.VITE_API_URL || 'http://localhost:5000/api'}/channels/live-events
-        <br />
-        Error: {(error as any).message}
+        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading schedules</div>
       </div>
     </div>
   );
@@ -283,73 +359,102 @@ const WorldCup = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-              {filteredMatches.map((match) => (
-                <div 
-                  key={match.id} 
-                  className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 group shadow-lg relative overflow-hidden"
-                >
-                  <div>
-                    <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
-                      <span className="flex items-center gap-1">
-                        <span className={`w-1.5 h-1.5 rounded-full ${match.live ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`} />
-                        FIFA World Cup
-                      </span>
-                      <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">
-                        {match.live ? `${match.statusLabel} Live` : getLocalTimeString(match.utcDateTime)}
-                      </span>
-                    </div>
-
-                    {/* Teams Display */}
-                    <div className="flex items-center justify-center space-x-4 mb-4">
-                      <div className="flex items-center space-x-3 flex-1 justify-end">
-                        <span className="text-xs font-bold text-white truncate max-w-[80px] text-right">
-                          {match.homeTeam}
+              {filteredMatches.map((match) => {
+                const live = isMatchLive(match.utcDateTime);
+                const streams = getStreamOptions(match.title);
+                const activeSelection = selectedStreams[match.id] || streams[0];
+                
+                return (
+                  <div 
+                    key={match.id} 
+                    className="bg-white/5 border border-white/5 rounded-2xl p-5 flex flex-col justify-between hover:border-blue-500/20 transition-all duration-300 group shadow-lg relative overflow-hidden"
+                  >
+                    <div>
+                      <div className="flex justify-between items-center text-[10px] font-black text-white/30 uppercase tracking-wider mb-4">
+                        <span className="flex items-center gap-1">
+                          <span className={`w-1.5 h-1.5 rounded-full ${live ? 'bg-emerald-500 animate-pulse' : 'bg-blue-500'}`} />
+                          FIFA World Cup
                         </span>
-                        {match.homeFlag && (
-                          <img 
-                            src={match.homeFlag} 
-                            alt={match.homeTeam} 
-                            className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md rounded"
-                          />
-                        )}
-                      </div>
-                      
-                      <span className="text-white/20 font-black text-[10px] italic uppercase tracking-wider shrink-0">VS</span>
-                      
-                      <div className="flex items-center space-x-3 flex-1 justify-start">
-                        {match.awayFlag && (
-                          <img 
-                            src={match.awayFlag} 
-                            alt={match.awayTeam} 
-                            className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md rounded"
-                          />
-                        )}
-                        <span className="text-xs font-bold text-white truncate max-w-[80px] text-left">
-                          {match.awayTeam}
+                        <span className="bg-white/5 px-2.5 py-0.5 rounded-md text-white/60 border border-white/5">
+                          {live ? 'LIVE' : getLocalTimeString(match.utcDateTime)}
                         </span>
                       </div>
+
+                      {/* Teams Display */}
+                      <div className="flex items-center justify-center space-x-4 mb-4">
+                        <div className="flex items-center space-x-3 flex-1 justify-end">
+                          <span className="text-xs font-bold text-white truncate max-w-[80px] text-right">
+                            {match.teams.home.name}
+                          </span>
+                          {match.teams.home.flagUrl && (
+                            <img 
+                              src={match.teams.home.flagUrl} 
+                              alt={match.teams.home.name} 
+                              className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md rounded"
+                            />
+                          )}
+                        </div>
+                        
+                        <span className="text-white/20 font-black text-[10px] italic uppercase tracking-wider shrink-0">VS</span>
+                        
+                        <div className="flex items-center space-x-3 flex-1 justify-start">
+                          {match.teams.away.flagUrl && (
+                            <img 
+                              src={match.teams.away.flagUrl} 
+                              alt={match.teams.away.name} 
+                              className="w-8 h-8 object-contain shrink-0 filter drop-shadow-md rounded"
+                            />
+                          )}
+                          <span className="text-xs font-bold text-white truncate max-w-[80px] text-left">
+                            {match.teams.away.name}
+                          </span>
+                        </div>
+                      </div>
+
+                      {/* Stream Dropdown (Only visible if match is LIVE) */}
+                      {live && streams.length > 0 && (
+                        <div className="mt-4 mb-2 animate-in fade-in slide-in-from-top-1 duration-200">
+                          <label className="text-[9px] font-black text-white/40 uppercase tracking-widest block mb-1">Select Live Feed</label>
+                          <select
+                            value={activeSelection?.id}
+                            onChange={(e) => {
+                              const s = streams.find(str => str.id === e.target.value);
+                              if (s) {
+                                setSelectedStreams(prev => ({ ...prev, [match.id]: s }));
+                              }
+                            }}
+                            className="w-full bg-[#0d0d0d] border border-white/10 rounded-xl px-3 py-2.5 text-xs font-bold text-white focus:outline-none focus:border-blue-500/50 cursor-pointer"
+                          >
+                            {streams.map((s, idx) => (
+                              <option key={s.id} value={s.id} className="bg-[#050505] text-white">
+                                {`Feed ${idx + 1}: ${s.channel_name}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      )}
+                    </div>
+
+                    {/* Play Button Conditional on Live State */}
+                    <div className="border-t border-white/5 pt-4 mt-2">
+                      {live ? (
+                        <button
+                          onClick={() => handleWatchMatch(match.id, match.title)}
+                          className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5"
+                        >
+                          <Play size={12} className="fill-current" />
+                          <span>WATCH LIVE NOW</span>
+                          <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
+                        </button>
+                      ) : (
+                        <div className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black border border-white/5 bg-white/5 text-white/30 select-none">
+                          <span>UPCOMING MATCH</span>
+                        </div>
+                      )}
                     </div>
                   </div>
-
-                  {/* Play Button Conditional on Live State */}
-                  <div className="border-t border-white/5 pt-4 mt-2">
-                    {match.live ? (
-                      <button
-                        onClick={() => handleWatchMatch(match.title, match.channels)}
-                        className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black transition-all cursor-pointer border bg-emerald-500/10 text-emerald-400 border-emerald-500/20 hover:bg-emerald-600 hover:text-white shadow-lg shadow-emerald-500/5"
-                      >
-                        <Play size={12} className="fill-current" />
-                        <span>WATCH LIVE NOW</span>
-                        <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-ping" />
-                      </button>
-                    ) : (
-                      <div className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-xs font-black border border-white/5 bg-white/5 text-white/30 select-none">
-                        <span>UPCOMING MATCH</span>
-                      </div>
-                    )}
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </section>
