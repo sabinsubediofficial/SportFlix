@@ -1,4 +1,4 @@
-import { useMemo, useState, useEffect } from 'react';
+import { useMemo, useState, useEffect, useRef } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { usePlayer } from '../context/PlayerContext';
 import { Trophy, Calendar, Play, Tv } from 'lucide-react';
@@ -174,6 +174,10 @@ const WorldCup = () => {
   const { openPlayer } = usePlayer();
   const [selectedDate, setSelectedDate] = useState<string>('');
   const [now, setNow] = useState(Date.now());
+  
+  // Track latency check timings for stream urls
+  const [streamLatencies, setStreamLatencies] = useState<Record<string, number>>({});
+  const initiatedPings = useRef<Set<string>>(new Set());
 
   // Update clock every 10 seconds for match scheduling/live windowing
   useEffect(() => {
@@ -249,9 +253,54 @@ const WorldCup = () => {
     return now >= matchTime && now <= matchTime + durationMs;
   };
 
-  // Compile available streams for a live match (API streams only)
+  // Ping check background effect for live stream URLs
+  useEffect(() => {
+    if (!data || !data['cdn-live-tv'] || !data['cdn-live-tv']['Soccer']) return;
+    const soccerEvents = data['cdn-live-tv']['Soccer'];
+    if (!Array.isArray(soccerEvents)) return;
+
+    const urlsToPing: string[] = [];
+    activeMatches.forEach(match => {
+      if (isMatchLive(match.utcDateTime)) {
+        const liveEvent = findMatchingLiveEvent(match.title);
+        if (liveEvent && liveEvent.channels) {
+          liveEvent.channels.forEach(c => {
+            if (c.url && !urlsToPing.includes(c.url) && !initiatedPings.current.has(c.url)) {
+              urlsToPing.push(c.url);
+            }
+          });
+        }
+      }
+    });
+
+    if (urlsToPing.length === 0) return;
+
+    const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+
+    urlsToPing.forEach(async (url) => {
+      initiatedPings.current.add(url);
+      // Set to -1 to denote "pinging in progress"
+      setStreamLatencies(prev => ({ ...prev, [url]: -1 }));
+      try {
+        const res = await fetch(`${apiBase}/channels/ping?url=${encodeURIComponent(url)}`);
+        if (res.ok) {
+          const result = await res.json();
+          setStreamLatencies(prev => ({
+            ...prev,
+            [url]: result.success ? result.latency : 9999
+          }));
+        } else {
+          setStreamLatencies(prev => ({ ...prev, [url]: 9999 }));
+        }
+      } catch {
+        setStreamLatencies(prev => ({ ...prev, [url]: 9999 }));
+      }
+    });
+  }, [data, activeMatches]);
+
+  // Compile available streams for a live match (API streams only, sorted by ping response)
   const getStreamOptions = (matchTitle: string) => {
-    const optionsList: { id: string; channel_name: string; url: string }[] = [];
+    const optionsList: { id: string; channel_name: string; url: string; latency: number }[] = [];
     const liveEvent = findMatchingLiveEvent(matchTitle);
 
     if (liveEvent && liveEvent.channels && liveEvent.channels.length > 0) {
@@ -260,10 +309,7 @@ const WorldCup = () => {
 
       liveEvent.channels.forEach(c => {
         const name = c.channel_name.toLowerCase();
-        // Check if name contains common sports channel brands/indicators
         const isSportsBrand = ['sport', 'bein', 'supersport', 'espn', 'tsn', 'canal', 'magenta', 'deportes', 'tudn', 'optus', 'sky', 'euro'].some(kw => name.includes(kw));
-        
-        // Check if it's a general network affiliate (e.g. general FOX/BBC/ITV/NBC local channels that aren't sports-branded)
         const isGeneralAffiliate = (name.includes('fox') && !name.includes('sport')) ||
                                    (name.includes('bbc') && !name.includes('sport')) ||
                                    (name.includes('itv') && !name.includes('sport')) ||
@@ -277,12 +323,34 @@ const WorldCup = () => {
         }
       });
 
-      // Prefer dedicated sports channels; fall back to general channels only if no sports-specific feeds are mapped
       const targetChannels = sportsChannels.length > 0 ? sportsChannels : generalChannels;
 
       targetChannels.forEach(c => {
-        optionsList.push({ id: c.id, channel_name: c.channel_name, url: c.url });
+        const lat = streamLatencies[c.url];
+        let label = '';
+        let sortLatency = 9999;
+
+        if (lat === -1) {
+          label = ' (pinging...)';
+          sortLatency = 5000; // Place above offline but below ready ones
+        } else if (lat === 9999) {
+          label = ' (offline)';
+          sortLatency = 9999;
+        } else if (lat !== undefined) {
+          label = ` (${lat}ms)`;
+          sortLatency = lat;
+        }
+
+        optionsList.push({ 
+          id: c.id, 
+          channel_name: `${c.channel_name}${label}`, 
+          url: c.url,
+          latency: sortLatency
+        });
       });
+
+      // Sort by measured latency ascending (fastest streams first)
+      optionsList.sort((a, b) => a.latency - b.latency);
     }
 
     return optionsList;
@@ -290,8 +358,9 @@ const WorldCup = () => {
 
   const handleWatchMatch = (matchTitle: string) => {
     const streams = getStreamOptions(matchTitle);
-    const activeStream = streams[0]; // Start playing the first stream by default
-
+    if (streams.length === 0) return;
+    
+    const activeStream = streams[0]; // Play the fastest responding stream by default
     const apiBase = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
     
     // Route through ad-blocking player proxy if it's an iframe player url
@@ -304,11 +373,21 @@ const WorldCup = () => {
       name: matchTitle,
       streamUrl: playUrl,
       groupTitle: 'Live Streams',
-      streams: streams // Forward streams list to the Player Modal overlay!
+      streams: streams // Forward sorted and labeled streams list to player modal!
     };
     
     openPlayer(targetChannel);
   };
+
+  if (isLoading && activeMatches.length === 0) return (
+    <div className="flex items-center justify-center h-screen bg-[#050505]">
+      <div className="relative">
+        <div className="w-24 h-24 border-2 border-white/5 rounded-full" />
+        <div className="absolute inset-0 w-24 h-24 border-t-2 border-blue-500 rounded-full animate-spin" />
+        <div className="mt-8 text-center text-white/40 font-black tracking-widest uppercase text-xs">Loading schedules</div>
+      </div>
+    </div>
+  );
 
   return (
     <div className="min-h-screen bg-[#050505] pb-24">

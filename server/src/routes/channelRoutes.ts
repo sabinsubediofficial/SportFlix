@@ -295,6 +295,48 @@ router.get('/live-events', async (req, res) => {
   }
 });
 
+// Ping endpoint to test stream response times and latencies
+router.get('/ping', async (req, res) => {
+  const { url } = req.query;
+  if (!url) {
+    res.status(400).json({ error: 'Missing url parameter' });
+    return;
+  }
+
+  const targetUrl = String(url);
+  try {
+    const start = Date.now();
+    // Try HEAD request first (low bandwidth)
+    await axios.head(targetUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+      },
+      timeout: 3000
+    });
+    const latency = Date.now() - start;
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.json({ success: true, latency });
+  } catch (error) {
+    // Fall back to GET if HEAD request is blocked/unsupported
+    try {
+      const start = Date.now();
+      await axios.get(targetUrl, {
+        headers: {
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+        },
+        timeout: 3000,
+        maxContentLength: 100 // Avoid downloading full body
+      });
+      const latency = Date.now() - start;
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.json({ success: true, latency });
+    } catch (err: any) {
+      res.setHeader('Access-Control-Allow-Origin', '*');
+      res.json({ success: false, latency: 9999, error: err.message });
+    }
+  }
+});
+
 // Ad-blocking proxy for player iframe pages
 router.get('/player-proxy', async (req, res) => {
   const { url } = req.query;
